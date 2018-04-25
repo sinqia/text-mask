@@ -1,18 +1,18 @@
 {
-  "name": "text-mask-addons",
+  "name": "@snsl/text-mask-addons",
   "version": "3.7.2",
-  "description": "Addons for Text Mask https://github.com/text-mask/text-mask",
+  "description": "Addons for Text Mask https://github.com/SeniorSolution/text-mask",
   "main": "dist/textMaskAddons.js",
   "author": "M.K. Safi <msafi@msafi.com>",
-  "license": "Unlicense",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/text-mask/text-mask/issues"
+    "url": "https://github.com/SeniorSolution/text-mask/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/text-mask/text-mask.git"
+    "url": "git+https://github.com/SeniorSolution/text-mask.git"
   },
-  "homepage": "https://github.com/text-mask/text-mask/tree/master/addons/#readme",
+  "homepage": "https://github.com/SeniorSolution/text-mask/tree/master/addons/#readme",
   "keywords": [
     "text mask",
     "input mask",
@@ -20,5 +20,11 @@
     "input formatting",
     "text formatting",
     "string formatting"
-  ]
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
