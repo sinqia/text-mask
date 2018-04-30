@@ -1,5 +1,5 @@
-import {placeholderChar as defaultPlaceholderChar} from './core/constants'
-import conformToMask from './core/conformToMask'
+import {conformToMask as conformToMask} from '@snsl/text-mask-core'
+import {placeholderChar as defaultPlaceholderChar} from '@snsl/text-mask-core'
 
 const dollarSign = '$'
 const emptyString = ''
@@ -54,15 +54,16 @@ export default function createFixedDecimalScaleComformToMask({
       }
     }
 
+    const {
+      placeholderChar = defaultPlaceholderChar,
+      previousConformedValue
+    } = config
+
     let {
       conformedValue,
       meta
     } = conformToMask(value, mask, config)
 
-    const {
-      placeholderChar = defaultPlaceholderChar,
-      previousConformedValue
-    } = config
     if ((conformedValue.match(digitRegExp) || []).length > 0 || // case '_' or ' ' or ''
       ((previousConformedValue || '') === emptyString && conformedValue !== emptyString &&
         conformedValue[1] === decimalSymbol &&

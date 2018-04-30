@@ -34,6 +34,7 @@ const App = React.createClass({
                 placeholder={props.placeholder}
                 placeholderChar={props.placeholderChar}
                 pipe={props.pipe}
+                conformToMask={props.conformToMask}
                 keepCharPositions={props.keepCharPositions}
                 ref='maskedInput'
                 mask={props.mask}

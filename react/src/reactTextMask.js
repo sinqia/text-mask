@@ -33,6 +33,7 @@ export default class MaskedInput extends React.Component {
     const {render, ...props} = this.props
 
     delete props.mask
+    delete props.conformToMask
     delete props.guide
     delete props.pipe
     delete props.placeholderChar
@@ -75,6 +76,7 @@ MaskedInput.propTypes = {
     PropTypes.shape({
       mask: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
       pipe: PropTypes.func,
+      conformToMask: PropTypes.func
     }),
   ]).isRequired,
   guide: PropTypes.bool,

@@ -1,3 +1,5 @@
 export {default as createAutoCorrectedDatePipe} from './createAutoCorrectedDatePipe'
 export {default as createNumberMask} from './createNumberMask'
 export {default as emailMask} from './emailMask'
+export {default as createFixedDecimalScaleNumberPipe} from './createFixedDecimalScaleNumberPipe'
+export {default as createFixedDecimalScaleComformToMask} from './createFixedDecimalScaleComformToMask'

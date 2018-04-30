@@ -1,5 +1,5 @@
 import adjustCaretPosition from './adjustCaretPosition'
-import conformToMask from './conformToMask'
+import {default as defaultConformToMask} from './conformToMask'
 import {convertMaskToPlaceholder, isString, isNumber, processCaretTraps} from './utilities'
 import {placeholderChar as defaultPlaceholderChar} from './constants'
 
@@ -28,7 +28,7 @@ export default function createTextMaskInputElement(config) {
       placeholderChar = defaultPlaceholderChar,
       keepCharPositions = false,
       showMask = false,
-      conformToMaskFunc = conformToMask
+      conformToMask
     } = config) {
       // if `rawValue` is `undefined`, read from the `inputElement`
       if (typeof rawValue === 'undefined') {
@@ -118,7 +118,11 @@ export default function createTextMaskInputElement(config) {
       }
 
       // `conformToMask` returns `conformedValue` as part of an object for future API flexibility
-      const {conformedValue} = conformToMaskFunc(safeRawValue, mask, conformToMaskConfig)
+      // The following few lines are to support the `pipe` feature.
+      if(!conformToMask) {
+        conformToMask = defaultConformToMask
+      }
+      const {conformedValue} = conformToMask(safeRawValue, mask, conformToMaskConfig)
 
       // The following few lines are to support the `pipe` feature.
       const piped = typeof pipe === strFunction

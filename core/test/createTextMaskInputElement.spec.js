@@ -126,7 +126,7 @@ describe('createTextMaskInputElement', () => {
         const mask = ['(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
         const textMaskControl = createTextMaskInputElement({inputElement, mask})
 
-        createTextMaskInputElement.__Rewire__('conformToMask', conformToMaskSpy)
+        createTextMaskInputElement.__Rewire__('defaultConformToMask', conformToMaskSpy)
 
         inputElement.value = '2'
         textMaskControl.update()
@@ -137,7 +137,7 @@ describe('createTextMaskInputElement', () => {
         textMaskControl.update('(2__) ___-____')
         expect(conformToMaskSpy.callCount).to.equal(1)
 
-        createTextMaskInputElement.__ResetDependency__('conformToMask')
+        createTextMaskInputElement.__ResetDependency__('defaultConformToMask')
       })
     }
 

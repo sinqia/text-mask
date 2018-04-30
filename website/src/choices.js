@@ -1,5 +1,7 @@
 import createAutoCorrectedDatePipe from '../../addons/src/createAutoCorrectedDatePipe'
 import createNumberMask from '../../addons/src/createNumberMask'
+import createFixedDecimalScaleNumberPipe from '../../addons/src/createFixedDecimalScaleNumberPipe'
+import createFixedDecimalScaleComformToMask from '../../addons/src/createFixedDecimalScaleComformToMask'
 import emailMask from '../../addons/src/emailMask'
 import {placeholderChars, alphabetic, digit} from './constants'
 import map from 'lodash/fp/map'
@@ -40,6 +42,36 @@ export default map(
   }, {
     name: 'US dollar amount (allows decimal)',
     mask: createNumberMask({allowDecimal: true}),
+    placeholder: 'Enter an amount',
+  }, {
+    name: 'US dollar amount (8 fixed decimal)',
+    mask: createNumberMask({
+      prefix: '',
+      includeThousandsSeparator: true,
+      thousandsSeparatorSymbol: '.',
+      decimalSymbol: ',',
+      decimalLimit: 8,
+      requireDecimal: true,
+      fixedDecimalScale: true
+    }),
+    pipe: createFixedDecimalScaleNumberPipe({
+      prefix: '',
+      includeThousandsSeparator: true,
+      thousandsSeparatorSymbol: '.',
+      decimalSymbol: ',',
+      decimalLimit: 8,
+      requireDecimal: true,
+      fixedDecimalScale: true
+    }),
+    conformToMask: createFixedDecimalScaleComformToMask({
+      prefix: '',
+      includeThousandsSeparator: true,
+      thousandsSeparatorSymbol: '.',
+      decimalSymbol: ',',
+      decimalLimit: 8,
+      requireDecimal: true,
+      fixedDecimalScale: true
+    }),
     placeholder: 'Enter an amount',
   }, {
     name: 'Percentage amount',

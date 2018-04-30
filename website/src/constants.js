@@ -7,6 +7,7 @@ export const textMaskProps = [
   'placeholder',
   'placeholderChar',
   'pipe',
+  'conformToMask',
   'keepCharPositions',
   'mask',
   'guide'
