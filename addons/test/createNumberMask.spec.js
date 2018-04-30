@@ -11,58 +11,70 @@ describe('createNumberMask', () => {
 
   it('takes a prefix', () => {
     let numberMask = createNumberMask({prefix: '$'})
-
-    expect(numberMask('12')).to.deep.equal(['$', /\d/, /\d/])
+    const maskResult = numberMask('12')
+    expect(maskResult.mask).to.deep.equal(['$', /\d/, /\d/])
+    expect(maskResult.hasRejectedChar).to.equal(false)
   })
 
   it('takes a suffix', () => {
     let numberMask = createNumberMask({suffix: ' $', prefix: ''})
-
-    expect(numberMask('12')).to.deep.equal([/\d/, /\d/, ' ', '$'])
+    const maskResult = numberMask('12')
+    expect(maskResult.mask).to.deep.equal([/\d/, /\d/, ' ', '$'])
+    expect(maskResult.hasRejectedChar).to.equal(false)
   })
 
   it('works when the prefix contains numbers', () => {
     let numberMask = createNumberMask({prefix: 'm2 '})
-
-    expect(numberMask('m2 1')).to.deep.equal(['m', '2', ' ', /\d/])
+    const maskResult = numberMask('m2 1')
+    expect(maskResult.mask).to.deep.equal(['m', '2', ' ', /\d/])
+    expect(maskResult.hasRejectedChar).to.equal(false)
   })
 
   it('works when the suffix contains numbers', () => {
     let numberMask = createNumberMask({prefix: '', suffix: ' m2'})
-
-    expect(numberMask('1 m2')).to.deep.equal([/\d/, ' ', 'm', '2'])
+    const maskResult = numberMask('1 m2')
+    expect(maskResult.mask).to.deep.equal([/\d/, ' ', 'm', '2'])
+    expect(maskResult.hasRejectedChar).to.equal(false)
   })
 
   it('works when there is a decimal and the suffix contains numbers', () => {
     let numberMask = createNumberMask({prefix: '', suffix: ' m2', allowDecimal: true})
-
-    expect(numberMask('1.2 m2')).to.deep.equal([/\d/, '[]', '.', '[]', /\d/, ' ', 'm', '2'])
+    const maskResult = numberMask('1.2 m2')
+    expect(maskResult.mask).to.deep.equal([/\d/, '[]', '.', '[]', /\d/, ' ', 'm', '2'])
+    expect(maskResult.hasRejectedChar).to.equal(false)
   })
 
   it('can be configured to add a thousands separator or not', () => {
     let numberMaskWithoutThousandsSeparator = createNumberMask({includeThousandsSeparator: false})
-    expect(numberMaskWithoutThousandsSeparator('1000')).to.deep.equal(['$', /\d/, /\d/, /\d/, /\d/])
+    const numberMaskWithoutThousandsSeparatorResult = numberMaskWithoutThousandsSeparator('1000')
+    expect(numberMaskWithoutThousandsSeparatorResult.mask).to.deep.equal(['$', /\d/, /\d/, /\d/, /\d/])
+    expect(numberMaskWithoutThousandsSeparatorResult.hasRejectedChar).to.equal(false)
 
     let numberMaskWithThousandsSeparator = createNumberMask()
-    expect(numberMaskWithThousandsSeparator('1000')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+    const numberMaskWithThousandsSeparatorResult = numberMaskWithThousandsSeparator('1000')
+    expect(numberMaskWithThousandsSeparatorResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+    expect(numberMaskWithThousandsSeparatorResult.hasRejectedChar).to.equal(false)
   })
 
   it('can be configured with a custom character for the thousands separator', () => {
     let numberMask = createNumberMask({thousandsSeparatorSymbol: '.'})
-
-    expect(numberMask('1000')).to.deep.equal(['$', /\d/, '.', /\d/, /\d/, /\d/])
+    const numberMaskResult = numberMask('1000')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, '.', /\d/, /\d/, /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('can be configured to accept a fraction and returns the fraction separator with caret traps', () => {
     let numberMask = createNumberMask({allowDecimal: true})
-
-    expect(numberMask('1000.')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/, '[]', '.', '[]'])
+    const numberMaskResult = numberMask('1000.')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/, '[]', '.', '[]'])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('rejects fractions by default', () => {
     let numberMask = createNumberMask()
-
-    expect(numberMask('1000.')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+    const numberMaskResult = numberMask('1000.')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('can be configured with a custom character for the fraction separator', () => {
@@ -71,94 +83,125 @@ describe('createNumberMask', () => {
       decimalSymbol: ',',
       thousandsSeparatorSymbol: '.'
     })
-
-    expect(numberMask('1000,')).to.deep.equal(['$', /\d/, '.', /\d/, /\d/, /\d/, '[]', ',', '[]'])
+    const numberMaskResult = numberMask('1000,')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, '.', /\d/, /\d/, /\d/, '[]', ',', '[]'])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('can limit the length of the fraction', () => {
     let numberMask = createNumberMask({allowDecimal: true, decimalLimit: 2})
-
-    expect(numberMask('1000.3823')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/, '[]', '.', '[]', /\d/, /\d/])
+    const numberMaskResult = numberMask('1000.3823')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/, '[]', '.', '[]', /\d/, /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('can require a fraction', () => {
     let numberMask = createNumberMask({requireDecimal: true})
-
-    expect(numberMask('1000')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/, '[]', '.', '[]'])
+    const numberMaskResult = numberMask('1000')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/, '[]', '.', '[]'])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('accepts negative integers', function() {
     let numberMask = createNumberMask({allowNegative: true})
-    expect(numberMask('-$12')).to.deep.equal([/-/, '$', /\d/, /\d/])
+    const numberMaskResult = numberMask('-$12')
+    expect(numberMaskResult.mask).to.deep.equal([/-/, '$', /\d/, /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('ignores multiple minus signs', function() {
     let numberMask = createNumberMask({allowNegative: true})
-    expect(numberMask('--$12')).to.deep.equal([/-/, '$', /\d/, /\d/])
+    const numberMaskResult = numberMask('--$12')
+    expect(numberMaskResult.mask).to.deep.equal([/-/, '$', /\d/, /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('adds a digit placeholder if the input is nothing but a minus sign in order to attract the caret', () => {
     let numberMask = createNumberMask({allowNegative: true})
-    expect(numberMask('-')).to.deep.equal([/-/, '$', /\d/])
+    const numberMaskResult = numberMask('-')
+    expect(numberMaskResult.mask).to.deep.equal([/-/, '$', /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('starts with dot should be considered as decimal input', () => {
     let numberMask = createNumberMask({prefix: '$', allowDecimal: true})
-    expect(numberMask('.')).to.deep.equal(['$', '0', '.', /\d/])
+    let numberMaskResult = numberMask('.')
+    expect(numberMaskResult).to.deep.equal(['$', '0', '.', /\d/])
 
     numberMask = createNumberMask({prefix: '#', allowDecimal: true})
-    expect(numberMask('.')).to.deep.equal(['#', '0', '.', /\d/])
+    numberMaskResult = numberMask('.')
+    expect(numberMaskResult).to.deep.equal(['#', '0', '.', /\d/])
 
     numberMask = createNumberMask({prefix: '', allowDecimal: true})
-    expect(numberMask('.')).to.deep.equal(['0', '.', /\d/])
+    numberMaskResult = numberMask('.')
+    expect(numberMaskResult).to.deep.equal(['0', '.', /\d/])
 
     numberMask = createNumberMask({allowDecimal: false})
-    expect(numberMask('.')).to.deep.equal(['$'])
+    numberMaskResult = numberMask('.')
+    expect(numberMaskResult.mask).to.deep.equal(['$'])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
 
     numberMask = createNumberMask({prefix: '', suffix: '$', allowDecimal: true})
-    expect(numberMask('.')).to.deep.equal(['0', '.', /\d/, '$'])
+    numberMaskResult = numberMask('.')
+    expect(numberMaskResult).to.deep.equal(['0', '.', /\d/, '$'])
   })
 
   it('can allow leading zeroes', function() {
     let numberMask = createNumberMask({allowLeadingZeroes: true})
-    expect(numberMask('012')).to.deep.equal(['$', /\d/, /\d/, /\d/])
+    const numberMaskResult = numberMask('012')
+    expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, /\d/, /\d/])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   it('works with large numbers when leading zeroes is false', function() {
     let numberMask = createNumberMask({allowLeadingZeroes: false})
-    expect(numberMask('111111111111111111111111')).to.deep.equal([
+    const numberMaskResult = numberMask('111111111111111111111111')
+    expect(numberMaskResult.mask).to.deep.equal([
       '$', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',',
       /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/
     ])
+    expect(numberMaskResult.hasRejectedChar).to.equal(false)
   })
 
   describe('integer limiting', () => {
     it('can limit the length of the integer part', () => {
       let numberMask = createNumberMask({integerLimit: 3})
-      expect(numberMask('1999')).to.deep.equal(['$', /\d/, /\d/, /\d/])
+      const numberMaskResult = numberMask('1999')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('works when there is a prefix', () => {
       let numberMask = createNumberMask({integerLimit: 3, prefix: '$'})
-      expect(numberMask('$1999')).to.deep.equal(['$', /\d/, /\d/, /\d/])
+      const numberMaskResult = numberMask('$1999')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('works when there is a thousands separator', () => {
-      expect(createNumberMask({integerLimit: 4, prefix: ''})('1,9995'))
-        .to.deep.equal([/\d/, ',', /\d/, /\d/, /\d/])
+      let numberMask = createNumberMask({integerLimit: 4, prefix: ''})
+      let numberMaskResult = numberMask('1,9995')
+      expect(numberMaskResult.mask).to.deep.equal([/\d/, ',', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
 
-      expect(createNumberMask({integerLimit: 7, prefix: ''})('1,000,0001'))
-        .to.deep.equal([/\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/])
+      numberMask = createNumberMask({integerLimit: 7, prefix: ''})
+      numberMaskResult = numberMask('1,000,0001')
+      expect(numberMaskResult.mask).to.deep.equal([/\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('works when there is a decimal and a prefix', () => {
       let numberMask = createNumberMask({integerLimit: 3, allowDecimal: true})
-      expect(numberMask('$199.34')).to.deep.equal(['$', /\d/, /\d/, /\d/, '[]', '.', '[]', /\d/, /\d/])
+      const numberMaskResult = numberMask('$199.34')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, /\d/, /\d/, '[]', '.', '[]', /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('works when there is a decimal and no prefix', () => {
       let numberMask = createNumberMask({integerLimit: 3, allowDecimal: true, prefix: ''})
-      expect(numberMask('199.34')).to.deep.equal([/\d/, /\d/, /\d/, '[]', '.', '[]', /\d/, /\d/])
+      const numberMaskResult = numberMask('199.34')
+      expect(numberMaskResult.mask).to.deep.equal([/\d/, /\d/, /\d/, '[]', '.', '[]', /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('works when thousandsSeparatorSymbol is a period', () => {
@@ -171,8 +214,11 @@ describe('createNumberMask', () => {
         integerLimit: 5,
         decimalLimit: 3,
       })
-      expect(numberMask('1234567890,12345678'))
-        .to.deep.equal([/\d/, /\d/, '.', /\d/, /\d/, /\d/, '[]', ',', '[]', /\d/, /\d/, /\d/])
+      const numberMaskResult = numberMask('1234567890,12345678')
+      expect(numberMaskResult.mask).to.deep.equal([
+        /\d/, /\d/, '.', /\d/, /\d/, /\d/, '[]', ',', '[]', /\d/, /\d/, /\d/
+      ])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
   })
 
@@ -184,46 +230,61 @@ describe('createNumberMask', () => {
     })
 
     it('returns a mask that has the same number of digits as the given number', () => {
-      expect(numberMask('20382')).to.deep.equal(['$', /\d/, /\d/, ',', /\d/, /\d/, /\d/])
+      const numberMaskResult = numberMask('20382')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, /\d/, ',', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('uses the dollar symbol as the default prefix', () => {
-      expect(numberMask('1')).to.deep.equal(['$', /\d/])
+      const numberMaskResult = numberMask('1')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('adds no suffix by default', () => {
-      expect(numberMask('1')).to.deep.equal(['$', /\d/])
+      const numberMaskResult = numberMask('1')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('returns a mask that appends the currency symbol', () => {
-      expect(numberMask('1')).to.deep.equal(['$', /\d/])
+      const numberMaskResult = numberMask('1')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('adds adds a comma after a thousand', () => {
-      expect(numberMask('1000')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+      const numberMaskResult = numberMask('1000')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('adds as many commas as needed', () => {
-      expect(numberMask('23984209342084'))
-        .to
-        .deep
-        .equal(
-          ['$', /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/]
-        )
+      const numberMaskResult = numberMask('23984209342084')
+      expect(numberMaskResult.mask).to.deep.equal([
+        '$', /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/, ',', /\d/, /\d/, /\d/
+      ])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('accepts any string and strips out any non-digit characters', () => {
-      expect(numberMask('h4x0r sp43k')).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+      const numberMaskResult = numberMask('h4x0r sp43k')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(true)
     })
 
     it('does not allow leading zeroes', function() {
       let numberMask = createNumberMask()
-      expect(numberMask('012')).to.deep.equal(['$', /\d/, /\d/])
+      const numberMaskResult = numberMask('012')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
 
     it('allows one leading zero followed by a fraction', function() {
       let numberMask = createNumberMask({allowDecimal: true})
-      expect(numberMask('0.12')).to.deep.equal(['$', /\d/, '[]', '.', '[]', /\d/, /\d/])
+      const numberMaskResult = numberMask('0.12')
+      expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, '[]', '.', '[]', /\d/, /\d/])
+      expect(numberMaskResult.hasRejectedChar).to.equal(false)
     })
   })
 })

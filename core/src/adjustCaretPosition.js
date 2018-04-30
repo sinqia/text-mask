@@ -52,9 +52,9 @@ export default function adjustCaretPosition({
   // positioning.
   const possiblyHasRejectedChar = isAddition && (
     previousConformedValue === conformedValue ||
-    conformedValue === placeholder) &&
-    ((RejectedChar !== null && RejectedChar === true) ||
-      pipeRejected === true) // reject char (only when pipe not Rejected)
+    conformedValue === placeholder) ||
+    (RejectedChar !== null && RejectedChar === true &&
+      pipeRejected === false) // reject char (only when pipe not Rejected)
 
   let startingSearchIndex = 0
   let trackRightCharacter
