@@ -27,7 +27,8 @@ export default function createTextMaskInputElement(config) {
       pipe,
       placeholderChar = defaultPlaceholderChar,
       keepCharPositions = false,
-      showMask = false
+      showMask = false,
+      conformToMaskFunc = conformToMask
     } = config) {
       // if `rawValue` is `undefined`, read from the `inputElement`
       if (typeof rawValue === 'undefined') {
@@ -78,11 +79,17 @@ export default function createTextMaskInputElement(config) {
 
       // If the `providedMask` is a function. We need to call it at every `update` to get the `mask` array.
       // Then we also need to get the `placeholder`
+      let hasRejectedChar = null
       if (typeof providedMask === strFunction) {
         mask = providedMask(safeRawValue, {currentCaretPosition, previousConformedValue, placeholderChar})
 
         // disable masking if `mask` is `false`
         if (mask === false) { return }
+
+        if(!Array.isArray(mask)) {
+          hasRejectedChar = mask.hasRejectedChar
+          mask = mask.mask
+        }
 
         // mask functions can setup caret traps to have some control over how the caret moves. We need to process
         // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask and return
@@ -111,17 +118,24 @@ export default function createTextMaskInputElement(config) {
       }
 
       // `conformToMask` returns `conformedValue` as part of an object for future API flexibility
-      const {conformedValue} = conformToMask(safeRawValue, mask, conformToMaskConfig)
+      const {conformedValue} = conformToMaskFunc(safeRawValue, mask, conformToMaskConfig)
 
       // The following few lines are to support the `pipe` feature.
       const piped = typeof pipe === strFunction
 
       let pipeResults = {}
+      let pipeRejected = false
 
       // If `pipe` is a function, we call it.
       if (piped) {
         // `pipe` receives the `conformedValue` and the configurations with which `conformToMask` was called.
-        pipeResults = pipe(conformedValue, {rawValue: safeRawValue, ...conformToMaskConfig})
+        pipeResults = pipe(conformedValue, {rawValue: safeRawValue, previousConformedValue,
+          guide,
+          placeholderChar,
+          pipe,
+          placeholder,
+          currentCaretPosition,
+          keepCharPositions})
 
         // `pipeResults` should be an object. But as a convenience, we allow the pipe author to just return `false` to
         // indicate rejection. Or return just a string when there are no piped characters.
@@ -130,6 +144,8 @@ export default function createTextMaskInputElement(config) {
         if (pipeResults === false) {
           // If the `pipe` rejects `conformedValue`, we use the `previousConformedValue`, and set `rejected` to `true`.
           pipeResults = {value: previousConformedValue, rejected: true}
+          placeholder = previousPlaceholder
+          pipeRejected = true
         } else if (isString(pipeResults)) {
           pipeResults = {value: pipeResults}
         }
@@ -150,7 +166,9 @@ export default function createTextMaskInputElement(config) {
         currentCaretPosition,
         placeholderChar,
         indexesOfPipedChars: pipeResults.indexesOfPipedChars,
-        caretTrapIndexes
+        caretTrapIndexes,
+        hasRejectedChar,
+        pipeRejected
       })
 
       // Text Mask sets the input value to an empty string when the condition below is set. It provides a better UX.

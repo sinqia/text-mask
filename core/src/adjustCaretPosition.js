@@ -10,7 +10,9 @@ export default function adjustCaretPosition({
   placeholderChar,
   placeholder,
   indexesOfPipedChars = defaultArray,
-  caretTrapIndexes = defaultArray
+  caretTrapIndexes = defaultArray,
+  RejectedChar = null,
+  pipeRejected = false
 }) {
   if (currentCaretPosition === 0) { return 0 }
 
@@ -50,8 +52,9 @@ export default function adjustCaretPosition({
   // positioning.
   const possiblyHasRejectedChar = isAddition && (
     previousConformedValue === conformedValue ||
-    conformedValue === placeholder
-  )
+    conformedValue === placeholder) &&
+    ((RejectedChar !== null && RejectedChar === true) ||
+      pipeRejected === true) // reject char (only when pipe not Rejected)
 
   let startingSearchIndex = 0
   let trackRightCharacter
