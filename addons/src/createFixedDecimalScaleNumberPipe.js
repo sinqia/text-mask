@@ -6,7 +6,7 @@ const period = '.'
 // const minusRegExp = /-/
 // const nonDigitsRegExp = /\D+/g
 // const number = 'number'
-// const digitRegExp = /\d/
+const digitRegExp = /\d/
 // const caretTrap = '[]'
 
 export default function createFixedDecimalScaleNumberPipe({
@@ -40,19 +40,34 @@ export default function createFixedDecimalScaleNumberPipe({
 
     const decimalSymbolCount = numberOfdecimalSymbol(value)
     if (decimalSymbolCount > 1 || // many '.'
-      (decimalSymbolCount === 0 && (rawValue || '') !== emptyString &&
+      (decimalSymbolCount === 0 && (value || '') !== emptyString &&
         (previousConformedValue || '') !== emptyString) || //deleting '.'
       (value[0] === '0' && value[1] !== decimalSymbol && isAddition &&
       (previousConformedValue || '') !== emptyString && previousConformedValue[0] !== '0') || //add '0' on left
-      (rawValue.match(new RegExp(placeholderChar)) || []).length > 0) { // add '_'
+      (value.match(new RegExp(placeholderChar)) || []).length > 0 || // key '_'
+      (value.length > 1 && value[0] === '0' && value[1] === '0' && isAddition) ||// case '00.'
+      (isAddition &&
+        numberOfThousandsSeparatorSymbol(value) > numberOfThousandsSeparatorSymbol(previousConformedValue) &&
+        numberOfDigits(value) === numberOfDigits(previousConformedValue)
+      )// add ','
+    ) { // add '_'
       return false
     }
     return conformedValue
   }
 
   function numberOfdecimalSymbol(str) {
-    const re = new RegExp(decimalSymbol, 'g')
-    return (str.match(re) || []).length
+    const re = new RegExp(decimalSymbol.replace(/\./g, '\\.'), 'g')
+    return ((str || '').match(re) || []).length
+  }
+
+  function numberOfThousandsSeparatorSymbol(str) {
+    const re = new RegExp(thousandsSeparatorSymbol.replace(/\./g, '\\.'), 'g')
+    return ((str || '').match(re) || []).length
+  }
+
+  function numberOfDigits(str) {
+    return ((str || '').match(digitRegExp) || []).length
   }
 
   numberPipe.instanceOf = 'createFixedDecimalScaleNumberPipe'

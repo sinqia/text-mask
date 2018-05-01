@@ -1,6 +1,6 @@
 import { Directive, ElementRef, forwardRef, Input, Inject, NgModule, OnChanges, Provider, Renderer, SimpleChanges } from '@angular/core'
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms'
-import { createTextMaskInputElement } from 'text-mask-core/dist/textMaskCore'
+import { createTextMaskInputElement } from '@snsl/text-mask-core/dist/textMaskCore'
 
 export const MASKEDINPUT_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -31,6 +31,7 @@ export class MaskedInputDirective implements ControlValueAccessor, OnChanges {
     placeholderChar: '_',
     pipe: undefined,
     keepCharPositions: false,
+    conformToMask: undefined
   }
 
   _onTouched = () => {}
@@ -108,4 +109,4 @@ export class MaskedInputDirective implements ControlValueAccessor, OnChanges {
 })
 export class TextMaskModule {}
 
-export { conformToMask } from 'text-mask-core/dist/textMaskCore'
+export { conformToMask } from '@snsl/text-mask-core/dist/textMaskCore'
