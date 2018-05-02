@@ -9,7 +9,7 @@ const period = '.'
 const digitRegExp = /\d/
 // const caretTrap = '[]'
 
-export default function createFixedDecimalScaleNumberPipe({
+export default function createNoDecimalNumberPipe({
   prefix = dollarSign,
   suffix = emptyString,
   includeThousandsSeparator = true,
@@ -39,9 +39,7 @@ export default function createFixedDecimalScaleNumberPipe({
     const value = rawValue
 
     const decimalSymbolCount = numberOfdecimalSymbol(value)
-    if (decimalSymbolCount > 1 || // many '.'
-      (decimalSymbolCount === 0 && (value || '') !== emptyString &&
-        (previousConformedValue || '') !== emptyString) || //deleting '.'
+    if (decimalSymbolCount > 0 || // add '.'
       (value[0] === '0' && value[1] !== decimalSymbol && isAddition &&
       (previousConformedValue || '') !== emptyString && previousConformedValue[0] !== '0') || //add '0' on left
       (value.match(new RegExp(placeholderChar)) || []).length > 0 || // key '_'

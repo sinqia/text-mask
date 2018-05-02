@@ -1,6 +1,6 @@
 {
   "name": "@snsl/text-mask-addons",
-  "version": "3.7.3",
+  "version": "3.7.4",
   "description": "Addons for Text Mask https://github.com/SeniorSolution/text-mask",
   "main": "dist/textMaskAddons.js",
   "author": "M.K. Safi <msafi@msafi.com>",

@@ -2,6 +2,8 @@ import createAutoCorrectedDatePipe from '../../addons/src/createAutoCorrectedDat
 import createNumberMask from '../../addons/src/createNumberMask'
 import createFixedDecimalScaleNumberPipe from '../../addons/src/createFixedDecimalScaleNumberPipe'
 import createFixedDecimalScaleComformToMask from '../../addons/src/createFixedDecimalScaleComformToMask'
+import createNoDecimalNumberPipe from '../../addons/src/createNoDecimalNumberPipe'
+import createNoDecimalNumberComformToMask from '../../addons/src/createNoDecimalNumberComformToMask'
 import emailMask from '../../addons/src/emailMask'
 import {placeholderChars, alphabetic, digit} from './constants'
 import map from 'lodash/fp/map'
@@ -13,6 +15,26 @@ const defaultValues = {
   keepCharPositions: false,
   help: null,
   placeholder: null
+}
+
+const propertiesNumberFixedDecimal = {
+  prefix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ',',
+  decimalSymbol: '.',
+  decimalLimit: 8,
+  requireDecimal: true,
+  fixedDecimalScale: true
+}
+
+const propertiesNumberNoDecimalWithPipe = {
+  prefix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ',',
+  decimalSymbol: '.',
+  decimalLimit: 0,
+  requireDecimal: false,
+  fixedDecimalScale: false
 }
 
 export default map(
@@ -44,34 +66,16 @@ export default map(
     mask: createNumberMask({allowDecimal: true}),
     placeholder: 'Enter an amount',
   }, {
-    name: 'US dollar amount (8 fixed decimal)',
-    mask: createNumberMask({
-      prefix: '',
-      includeThousandsSeparator: true,
-      thousandsSeparatorSymbol: '.',
-      decimalSymbol: ',',
-      decimalLimit: 8,
-      requireDecimal: true,
-      fixedDecimalScale: true
-    }),
-    pipe: createFixedDecimalScaleNumberPipe({
-      prefix: '',
-      includeThousandsSeparator: true,
-      thousandsSeparatorSymbol: '.',
-      decimalSymbol: ',',
-      decimalLimit: 8,
-      requireDecimal: true,
-      fixedDecimalScale: true
-    }),
-    conformToMask: createFixedDecimalScaleComformToMask({
-      prefix: '',
-      includeThousandsSeparator: true,
-      thousandsSeparatorSymbol: '.',
-      decimalSymbol: ',',
-      decimalLimit: 8,
-      requireDecimal: true,
-      fixedDecimalScale: true
-    }),
+    name: 'Number (8 fixed decimal)',
+    mask: createNumberMask(propertiesNumberFixedDecimal),
+    pipe: createFixedDecimalScaleNumberPipe(propertiesNumberFixedDecimal),
+    conformToMask: createFixedDecimalScaleComformToMask(propertiesNumberFixedDecimal),
+    placeholder: 'Enter an amount',
+  }, {
+    name: 'Number 0 Decimal With Pipe',
+    mask: createNumberMask(propertiesNumberNoDecimalWithPipe),
+    pipe: createNoDecimalNumberPipe(propertiesNumberNoDecimalWithPipe),
+    conformToMask: createNoDecimalNumberComformToMask(propertiesNumberNoDecimalWithPipe),
     placeholder: 'Enter an amount',
   }, {
     name: 'Percentage amount',
