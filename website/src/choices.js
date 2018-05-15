@@ -37,6 +37,16 @@ const propertiesNumberNoDecimalWithPipe = {
   fixedDecimalScale: false
 }
 
+const propertiesNumberNoDecimalWithPipeWithoutThousandsSeparate = {
+  prefix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: '',
+  decimalSymbol: '',
+  decimalLimit: 0,
+  requireDecimal: false,
+  fixedDecimalScale: false
+}
+
 export default map(
   (choice) => ({...defaultValues, ...choice}),
   [{
@@ -76,6 +86,12 @@ export default map(
     mask: createNumberMask(propertiesNumberNoDecimalWithPipe),
     pipe: createNoDecimalNumberPipe(propertiesNumberNoDecimalWithPipe),
     conformToMask: createNoDecimalNumberComformToMask(propertiesNumberNoDecimalWithPipe),
+    placeholder: 'Enter an amount',
+  }, {
+    name: 'Number 0 Decimal, without Thousands Separate',
+    mask: createNumberMask(propertiesNumberNoDecimalWithPipeWithoutThousandsSeparate),
+    pipe: createNoDecimalNumberPipe(propertiesNumberNoDecimalWithPipeWithoutThousandsSeparate),
+    conformToMask: createNoDecimalNumberComformToMask(propertiesNumberNoDecimalWithPipeWithoutThousandsSeparate),
     placeholder: 'Enter an amount',
   }, {
     name: 'Percentage amount',

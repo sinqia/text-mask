@@ -57,11 +57,18 @@ export default function createFixedDecimalScaleNumberPipe({
   }
 
   function numberOfdecimalSymbol(str) {
+    if(decimalSymbol === undefined || decimalSymbol === null || decimalSymbol.trim() === '') {
+      return 0
+    }
     const re = new RegExp(decimalSymbol.replace(/\./g, '\\.'), 'g')
     return ((str || '').match(re) || []).length
   }
 
   function numberOfThousandsSeparatorSymbol(str) {
+    if(thousandsSeparatorSymbol === undefined ||
+      thousandsSeparatorSymbol === null || thousandsSeparatorSymbol.trim() === '') {
+      return 0
+    }
     const re = new RegExp(thousandsSeparatorSymbol.replace(/\./g, '\\.'), 'g')
     return ((str || '').match(re) || []).length
   }
