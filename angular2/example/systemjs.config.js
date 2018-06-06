@@ -21,7 +21,6 @@
       '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
       '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
-      '@snsl/text-mask-core': 'npm:@snsl/text-mask-core',
       '@snsl/angular2-text-mask': 'dist/angular2TextMask.js',
       // other libraries
       'rxjs': 'npm:rxjs'
@@ -33,9 +32,6 @@
         defaultExtension: 'js'
       },
       rxjs: {
-        defaultExtension: 'js'
-      },
-      'text-mask-core': {
         defaultExtension: 'js'
       },
       'angular2-text-mask': {

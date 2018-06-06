@@ -1,0 +1,1 @@
+export function convertMaskToPlaceholder(a: any, b: any): any

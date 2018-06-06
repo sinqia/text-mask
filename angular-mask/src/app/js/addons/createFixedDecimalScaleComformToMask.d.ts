@@ -1,0 +1,1 @@
+export function createFixedDecimalScaleComformToMask(a: any): any
