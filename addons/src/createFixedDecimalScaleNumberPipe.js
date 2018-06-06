@@ -6,7 +6,7 @@ const period = '.'
 // const minusRegExp = /-/
 // const nonDigitsRegExp = /\D+/g
 // const number = 'number'
-const digitRegExp = /\d/
+const digitRegExp = /\d/g
 // const caretTrap = '[]'
 
 export default function createFixedDecimalScaleNumberPipe({
