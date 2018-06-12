@@ -6,7 +6,7 @@ const period = '.'
 // const minusRegExp = /-/
 // const nonDigitsRegExp = /\D+/g
 // const number = 'number'
-const digitRegExp = /\d/g
+const digitRegExp = /\d/
 // const caretTrap = '[]'
 
 export default function createFixedDecimalScaleNumberPipe({
@@ -74,7 +74,8 @@ export default function createFixedDecimalScaleNumberPipe({
   }
 
   function numberOfDigits(str) {
-    return ((str || '').match(digitRegExp) || []).length
+    const digitReg = new RegExp(digitRegExp, 'g')
+    return ((str || '').match(digitReg) || []).length
   }
 
   numberPipe.instanceOf = 'createFixedDecimalScaleNumberPipe'
