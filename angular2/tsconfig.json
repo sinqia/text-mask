@@ -16,7 +16,7 @@
     ]
   },
   "files": [
-    "src/angular2TextMask.ts"
+    "src/angular2/angular2TextMask.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "aot"
