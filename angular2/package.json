@@ -65,6 +65,6 @@
     "zone.js": "^0.8.4"
   },
   "dependencies": {
-    "@snsl/text-mask-core": "^5.0.6"
+    "@snsl/text-mask-core": "^5.1.2"
   }
 }
