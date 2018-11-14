@@ -17,11 +17,13 @@
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
       '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
-      '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
       '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
-      '@snsl/angular2-text-mask': 'dist/angular2TextMask.js',
+      '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
+      '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+      '@snsl/angular2-text-mask': 'npm:@snsl/angular2-text-mask/dist/angular2TextMask.js',
+      '@snsl/text-mask-core/dist/textMaskCore': 'npm:@snsl/text-mask-core/dist/textMaskCore.js',
       // other libraries
       'rxjs': 'npm:rxjs'
     },
@@ -34,7 +36,7 @@
       rxjs: {
         defaultExtension: 'js'
       },
-      'angular2-text-mask': {
+      '@snsl/angular2-text-mask': {
         defaultExtension: 'js'
       }
     }

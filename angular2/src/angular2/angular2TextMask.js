@@ -14,16 +14,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var createTextMaskInputElement_1 = require("./core/createTextMaskInputElement");
+var platform_browser_1 = require("@angular/platform-browser");
+var textMaskCore_1 = require("@snsl/text-mask-core/dist/textMaskCore");
+var TextMaskConfig = /** @class */ (function () {
+    function TextMaskConfig() {
+    }
+    return TextMaskConfig;
+}());
+exports.TextMaskConfig = TextMaskConfig;
 exports.MASKEDINPUT_VALUE_ACCESSOR = {
     provide: forms_1.NG_VALUE_ACCESSOR,
     useExisting: core_1.forwardRef(function () { return MaskedInputDirective; }),
     multi: true
 };
-var MaskedInputDirective = (function () {
-    function MaskedInputDirective(renderer, element) {
-        this.renderer = renderer;
-        this.element = element;
+/**
+ * We must check whether the agent is Android because composition events
+ * behave differently between iOS and Android.
+ */
+function _isAndroid() {
+    var userAgent = platform_browser_1.ɵgetDOM() ? platform_browser_1.ɵgetDOM().getUserAgent() : '';
+    return /android (\d+)/.test(userAgent.toLowerCase());
+}
+var MaskedInputDirective = /** @class */ (function () {
+    function MaskedInputDirective(_renderer, _elementRef, _compositionMode) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        this._compositionMode = _compositionMode;
         this.textMaskConfig = {
             mask: [],
             guide: true,
@@ -32,90 +48,101 @@ var MaskedInputDirective = (function () {
             keepCharPositions: false,
             conformToMask: undefined
         };
-        this._onTouched = function () { };
-        this._onChange = function (_) { };
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+        /** Whether the user is creating a composition string (IME events). */
+        this._composing = false;
+        if (this._compositionMode == null) {
+            this._compositionMode = !_isAndroid();
+        }
     }
     MaskedInputDirective.prototype.ngOnChanges = function (changes) {
-        this.setupMask(true);
+        this._setupMask(true);
         if (this.textMaskInputElement !== undefined) {
             this.textMaskInputElement.update(this.inputElement.value);
         }
     };
     MaskedInputDirective.prototype.writeValue = function (value) {
-        this.setupMask();
+        this._setupMask();
         // set the initial value for cases where the mask is disabled
         var normalizedValue = value == null ? '' : value;
-        this.renderer.setElementProperty(this.inputElement, 'value', normalizedValue);
+        this._renderer.setProperty(this.inputElement, 'value', normalizedValue);
         if (this.textMaskInputElement !== undefined) {
             this.textMaskInputElement.update(value);
         }
     };
-    MaskedInputDirective.prototype.registerOnChange = function (fn) { this._onChange = fn; };
-    MaskedInputDirective.prototype.registerOnTouched = function (fn) { this._onTouched = fn; };
+    MaskedInputDirective.prototype.registerOnChange = function (fn) { this.onChange = fn; };
+    MaskedInputDirective.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
     MaskedInputDirective.prototype.setDisabledState = function (isDisabled) {
-        this.renderer.setElementProperty(this.element.nativeElement, 'disabled', isDisabled);
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
     };
-    MaskedInputDirective.prototype.onInput = function (value) {
-        this.setupMask();
-        if (this.textMaskInputElement !== undefined) {
-            this.textMaskInputElement.update(value);
-            // get the updated value
-            value = this.inputElement.value;
-            // check against the last value to prevent firing ngModelChange despite no changes
-            if (this.lastValue !== value) {
-                this.lastValue = value;
-                this._onChange(value);
+    MaskedInputDirective.prototype._handleInput = function (value) {
+        if (!this._compositionMode || (this._compositionMode && !this._composing)) {
+            this._setupMask();
+            if (this.textMaskInputElement !== undefined) {
+                this.textMaskInputElement.update(value);
+                // get the updated value
+                value = this.inputElement.value;
+                this.onChange(value);
             }
         }
     };
-    MaskedInputDirective.prototype.setupMask = function (create) {
+    MaskedInputDirective.prototype._setupMask = function (create) {
         if (create === void 0) { create = false; }
         if (!this.inputElement) {
-            if (this.element.nativeElement.tagName === 'INPUT') {
+            if (this._elementRef.nativeElement.tagName.toUpperCase() === 'INPUT') {
                 // `textMask` directive is used directly on an input element
-                this.inputElement = this.element.nativeElement;
+                this.inputElement = this._elementRef.nativeElement;
             }
             else {
                 // `textMask` directive is used on an abstracted input element, `md-input-container`, etc
-                this.inputElement = this.element.nativeElement.getElementsByTagName('INPUT')[0];
+                this.inputElement = this._elementRef.nativeElement.getElementsByTagName('INPUT')[0];
             }
         }
         if (this.inputElement && create) {
-            this.textMaskInputElement = createTextMaskInputElement_1.createTextMaskInputElement(Object.assign({ inputElement: this.inputElement }, this.textMaskConfig));
+            this.textMaskInputElement = textMaskCore_1.createTextMaskInputElement(Object.assign({ inputElement: this.inputElement }, this.textMaskConfig));
         }
     };
+    MaskedInputDirective.prototype._compositionStart = function () { this._composing = true; };
+    MaskedInputDirective.prototype._compositionEnd = function (value) {
+        this._composing = false;
+        this._compositionMode && this._handleInput(value);
+    };
+    __decorate([
+        core_1.Input('textMask'),
+        __metadata("design:type", TextMaskConfig)
+    ], MaskedInputDirective.prototype, "textMaskConfig", void 0);
+    MaskedInputDirective = __decorate([
+        core_1.Directive({
+            host: {
+                '(input)': '_handleInput($event.target.value)',
+                '(blur)': 'onTouched()',
+                '(compositionstart)': '_compositionStart()',
+                '(compositionend)': '_compositionEnd($event.target.value)'
+            },
+            selector: '[textMask]',
+            exportAs: 'textMask',
+            providers: [exports.MASKEDINPUT_VALUE_ACCESSOR]
+        }),
+        __param(2, core_1.Optional()), __param(2, core_1.Inject(forms_1.COMPOSITION_BUFFER_MODE)),
+        __metadata("design:paramtypes", [core_1.Renderer2,
+            core_1.ElementRef, Boolean])
+    ], MaskedInputDirective);
     return MaskedInputDirective;
 }());
-__decorate([
-    core_1.Input('textMask'),
-    __metadata("design:type", Object)
-], MaskedInputDirective.prototype, "textMaskConfig", void 0);
-MaskedInputDirective = __decorate([
-    core_1.Directive({
-        host: {
-            '(input)': 'onInput($event.target.value)',
-            '(blur)': '_onTouched()'
-        },
-        selector: '[textMask]',
-        exportAs: 'textMask',
-        providers: [exports.MASKEDINPUT_VALUE_ACCESSOR]
-    }),
-    __param(0, core_1.Inject(core_1.Renderer)), __param(1, core_1.Inject(core_1.ElementRef)),
-    __metadata("design:paramtypes", [core_1.Renderer, core_1.ElementRef])
-], MaskedInputDirective);
 exports.MaskedInputDirective = MaskedInputDirective;
-var TextMaskModule = (function () {
+var TextMaskModule = /** @class */ (function () {
     function TextMaskModule() {
     }
+    TextMaskModule = __decorate([
+        core_1.NgModule({
+            declarations: [MaskedInputDirective],
+            exports: [MaskedInputDirective]
+        })
+    ], TextMaskModule);
     return TextMaskModule;
 }());
-TextMaskModule = __decorate([
-    core_1.NgModule({
-        declarations: [MaskedInputDirective],
-        exports: [MaskedInputDirective]
-    })
-], TextMaskModule);
 exports.TextMaskModule = TextMaskModule;
-var textMaskCore_1 = require("@snsl/text-mask-core/dist/textMaskCore");
-exports.conformToMask = textMaskCore_1.conformToMask;
+var textMaskCore_2 = require("@snsl/text-mask-core/dist/textMaskCore");
+exports.conformToMask = textMaskCore_2.conformToMask;
 //# sourceMappingURL=angular2TextMask.js.map

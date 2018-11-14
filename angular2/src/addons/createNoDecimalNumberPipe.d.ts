@@ -1,1 +1,0 @@
-export function createNoDecimalNumberPipe(a: any): any

@@ -1,1 +1,0 @@
-export function adjustCaretPosition(a: any): any

@@ -1,1 +1,0 @@
-export function createNoDecimalNumberComformToMask(a: any): any
