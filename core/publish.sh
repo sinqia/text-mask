@@ -7,14 +7,14 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
-npm run core:build
+yarn core:build
 
-npm run core:verify
+yarn core:verify
 
 cd ./core
 
 generatedNpmVersion="$(npm version $version)"
 
-npm publish --access public
+yarn publish --access public
 
 git tag "core-${generatedNpmVersion}"

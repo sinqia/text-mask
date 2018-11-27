@@ -1,4 +1,4 @@
-import adjustCaretPosition from './adjustCaretPosition'
+import {default as adjustCaretPositionDefault} from './adjustCaretPosition'
 import {default as defaultConformToMask} from './conformToMask'
 import {convertMaskToPlaceholder, isString, isNumber, processCaretTraps} from './utilities'
 import {placeholderChar as defaultPlaceholderChar, strFunction} from './constants'
@@ -27,7 +27,8 @@ export default function createTextMaskInputElement(config) {
       placeholderChar = defaultPlaceholderChar,
       keepCharPositions = false,
       showMask = false,
-      conformToMask
+      conformToMask,
+      adjustCaretPosition
     } = config) {
       // if `rawValue` is `undefined`, read from the `inputElement`
       if (typeof rawValue === 'undefined') {
@@ -154,7 +155,7 @@ export default function createTextMaskInputElement(config) {
 
       // After determining the conformed value, we will need to know where to set
       // the caret position. `adjustCaretPosition` will tell us.
-      const adjustedCaretPosition = adjustCaretPosition({
+      const adjustedCaretPosition = (adjustCaretPosition || adjustCaretPositionDefault)({
         previousConformedValue,
         previousPlaceholder,
         conformedValue: finalConformedValue,
