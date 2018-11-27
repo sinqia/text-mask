@@ -2,8 +2,8 @@ const dollarSign = '$'
 const emptyString = ''
 const comma = ','
 const period = '.'
-// const minus = '-'
-// const minusRegExp = /-/
+const minus = '-'
+const minusRegExp = /-/g
 // const nonDigitsRegExp = /\D+/g
 // const number = 'number'
 const digitRegExp = /\d/
@@ -24,7 +24,7 @@ export default function createNoDecimalNumberPipe({
   integerLimit = null
 } = {}) {
   function numberPipe(conformedValue, config) {
-    const {rawValue, previousConformedValue, placeholderChar} = config
+    const {rawValue, previousConformedValue} = config
 
     // Calculate lengths once for performance
     const rawValueLength = (rawValue || '').length
@@ -38,24 +38,58 @@ export default function createNoDecimalNumberPipe({
 
     const value = rawValue
 
-    const decimalSymbolCount = numberOfdecimalSymbol(value)
-    if (decimalSymbolCount > 0 || // add '.'
-      (value[0] === '0' && value[1] !== decimalSymbol && isAddition &&
-      (previousConformedValue || '') !== emptyString && previousConformedValue[0] !== '0') || //add '0' on left
-      (value.match(new RegExp(placeholderChar)) || []).length > 0 || // key '_'
-      (value.length > 1 && value[0] === '0' && value[1] === '0' && isAddition) ||// case '00.'
-      (isAddition &&
-        numberOfThousandsSeparatorSymbol(value) > numberOfThousandsSeparatorSymbol(previousConformedValue) &&
-        numberOfDigits(value) === numberOfDigits(previousConformedValue)
-      )// add ','
+    // No Number Character
+    if ((value.match(new RegExp(`[^0-9${thousandsSeparatorSymbol}${minus}]`, 'g')) || []).length > 0) {
+      return false
+    }
+
+    // Only 1 Minus
+    if ((value.match(minusRegExp) || []).length > 1) {
+      return false
+    }
+
+    // Negative Number with minus Not in 0 Position
+    const negative = (value.match(minusRegExp) || []).length > 0
+    if (negative && value[0] !== minus) {
+      return false
+    }
+
+    // integer limit
+    if (integerLimit !== null && numberOfDigits(value) > integerLimit) {
+      return false
+    }
+
+    // add '.'
+    if (numberOfdecimalSymbol(value) > 0) {
+      return false
+    }
+
+    //add '0' on left
+    if (isAddition &&
+      (previousConformedValue || '') !== emptyString &&
+      (negative ? value[1] === '0' : value[0] === '0') &&
+      previousConformedValue[0] !== '0'
     ) {
+      return false
+    }
+
+    // case '00'
+    if (isAddition &&
+      (negative ? value[1] === '0' && value[2] === '0' : value[0] === '0' && value[1] === '0')) {
+      return false
+    }
+
+    // add ','
+    if (isAddition &&
+      numberOfThousandsSeparatorSymbol(value) > numberOfThousandsSeparatorSymbol(previousConformedValue) &&
+      numberOfDigits(value) === numberOfDigits(previousConformedValue)) {
       return false
     }
     return conformedValue
   }
 
   function numberOfdecimalSymbol(str) {
-    if(decimalSymbol === undefined ||
+    if (decimalSymbol === undefined ||
       decimalSymbol === null || decimalSymbol.trim() === '') {
       return 0
     }
@@ -64,7 +98,7 @@ export default function createNoDecimalNumberPipe({
   }
 
   function numberOfThousandsSeparatorSymbol(str) {
-    if(thousandsSeparatorSymbol === undefined ||
+    if (thousandsSeparatorSymbol === undefined ||
       thousandsSeparatorSymbol === null || thousandsSeparatorSymbol.trim() === '') {
       return 0
     }

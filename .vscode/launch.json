@@ -7,12 +7,26 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Test Core",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "--compilers",
                 "js:babel-core/register",
                 "core/test",
+                "--require",
+                "./common/domSetup.js",
+                "--recursive"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test Addons",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--compilers",
+                "js:babel-core/register",
+                "addons/test",
                 "--require",
                 "./common/domSetup.js",
                 "--recursive"

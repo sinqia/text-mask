@@ -74,7 +74,7 @@ describe('createNumberMask', () => {
     let numberMask = createNumberMask()
     const numberMaskResult = numberMask('1000.')
     expect(numberMaskResult.mask).to.deep.equal(['$', /\d/, ',', /\d/, /\d/, /\d/])
-    expect(numberMaskResult.hasRejectedChar).to.equal(false)
+    expect(numberMaskResult.hasRejectedChar).to.equal(true)
   })
 
   it('can be configured with a custom character for the fraction separator', () => {
@@ -139,7 +139,7 @@ describe('createNumberMask', () => {
     numberMask = createNumberMask({allowDecimal: false})
     numberMaskResult = numberMask('.')
     expect(numberMaskResult.mask).to.deep.equal(['$'])
-    expect(numberMaskResult.hasRejectedChar).to.equal(false)
+    expect(numberMaskResult.hasRejectedChar).to.equal(true)
 
     numberMask = createNumberMask({prefix: '', suffix: '$', allowDecimal: true})
     numberMaskResult = numberMask('.')

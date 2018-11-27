@@ -5,3 +5,4 @@ export {default as createFixedDecimalScaleNumberPipe} from './createFixedDecimal
 export {default as createFixedDecimalScaleComformToMask} from './createFixedDecimalScaleComformToMask'
 export {default as createNoDecimalNumberPipe} from './createNoDecimalNumberPipe'
 export {default as createNoDecimalNumberComformToMask} from './createNoDecimalNumberComformToMask'
+export {default as createFixedDecimalScaleAjustCaretPosition} from './createFixedDecimalScaleAjustCaretPosition'

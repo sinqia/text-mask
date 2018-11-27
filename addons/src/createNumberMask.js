@@ -30,16 +30,44 @@ export default function createNumberMask({
   function numberMask(rawValue = emptyString) {
     const rawValueLength = rawValue.length
 
+    if (requireDecimal === true) {
+      allowDecimal = true
+    }
+
+    if (allowDecimal === false || decimalLimit <= 0) {
+      decimalSymbol = ''
+    }
+
     if (
       rawValue === emptyString ||
       (rawValue[0] === prefix[0] && rawValueLength === 1)
     ) {
-      return prefix.split(emptyString).concat([digitRegExp]).concat(suffix.split(emptyString))
+      const middleMask = [digitRegExp, decimalSymbol, digitRegExp]
+
+      if (requireDecimal === true) {
+        if (fixedDecimalScale === true) {
+          for (let i = 0; i < decimalLimit - 1; i++) {
+            middleMask.push(digitRegExp)
+          }
+        }
+      }
+      return prefix.split(emptyString).concat(middleMask
+      ).concat(suffix.split(emptyString))
     } else if (
       rawValue === decimalSymbol &&
       allowDecimal
     ) {
-      return prefix.split(emptyString).concat(['0', decimalSymbol, digitRegExp]).concat(suffix.split(emptyString))
+      const middleMask = ['0', decimalSymbol, digitRegExp]
+
+      if (requireDecimal === true) {
+        if (fixedDecimalScale === true) {
+          for (let i = 0; i < decimalLimit - 1; i++) {
+            middleMask.push(digitRegExp)
+          }
+        }
+      }
+
+      return prefix.split(emptyString).concat(middleMask).concat(suffix.split(emptyString))
     }
 
     const isNegative = (rawValue[0] === minus) && allowNegative
@@ -121,7 +149,7 @@ export default function createNumberMask({
       if (requireDecimal === true) {
         if (fixedDecimalScale === true) {
           const decimalLimitRemaining = fraction ? decimalLimit - fraction.length : decimalLimit
-          for (var i = 0; i < decimalLimitRemaining; i++) {
+          for (let i = 0; i < decimalLimitRemaining; i++) {
             mask.push(digitRegExp)
           }
         } else if (rawValue[indexOfLastDecimal - 1] === decimalSymbol) {
