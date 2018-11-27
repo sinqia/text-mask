@@ -64,7 +64,7 @@ export default function createFixedDecimalScaleComformToMask({
     const negative = (value.match(minusRegExp) || []).length > 0
 
     if (isAddition) {
-      // erro numero começando com virgula
+      // start with '.'
       if ((value || '').length > 0) {
         if (negative) {
           if (value[0] === minus && value[1] === decimalSymbol) {
@@ -75,9 +75,9 @@ export default function createFixedDecimalScaleComformToMask({
         }
       }
 
-      // tirando 0 as esquerda
+      // removing 0 on left
       if (numberOfDigits(value) > 0) {
-        //erro numero começando com 0
+        //error: number start with 0
         if (negative) {
           while ((value || '').length > 4 && value[0] === minus && value[1] === '0' && value[2] !== ',') {
             value = `${minus}${value.substr(2)}`
@@ -100,7 +100,7 @@ export default function createFixedDecimalScaleComformToMask({
     const previousIndexOfDecimalSymbol = (previousConformedValue || '').indexOf(decimalSymbol)
 
     if (isAddition) {
-      // 0 || -0 digita numero ficando 10 || -10 (remove o 0)
+      // when start with ( 0 || -0 ) and caret position is on the left, when press any value remove '0'
       if (!negative &&
         numberOfDigits(conformedValue.substr(0, indexOfDecimalSymbol)) === 2 &&
         (previousConformedValue || '').substr(0, previousIndexOfDecimalSymbol) === '0') {
@@ -112,35 +112,35 @@ export default function createFixedDecimalScaleComformToMask({
       }
 
       if ((previousConformedValue || '') === emptyString && conformedValue !== emptyString) {
-        // começando a digitar a partir de string vazia
+        // start with empty string
         conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
       }
 
       if ((previousConformedValue || '') !== emptyString && value[0] === minus) {
-        // Selecionando tudo e digitando novo valor (tab)
+        // select all the input and start a new value || (tab)
         conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
       }
     } else {
       if ((previousConformedValue || '') !== emptyString) {
-        if (value === decimalSymbol) { // selecionando tudo e digita '.'
+        if (value === decimalSymbol) { // select all the input and press '.'
           conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
 
-          // está excluindo // ',' ou '-,'
+          // removing number after '.' ( 0.0 | -0.0 -> .0 | -.0 )
         } else if (value[0] === decimalSymbol || value.substr(0, 2) === `${minus}${decimalSymbol}`) {
-          // apaga somente quando as casas decimais eh 0
+          // excluding all when all decimals is 0
           if (value.substr(valueIndexOfDecimalSymbol + 1).match(new RegExp('0', 'g')).length === decimalLimit) {
             conformedValue = ''
-          } else if (!negative) { // recoloca o 0
+          } else if (!negative) { // keep 0
             conformedValue = `0${value}`
-          } else {
+          } else { // keep 0
             conformedValue = `-0${value.substr(1)}`
           }
-        } else if ((value || '').length > 0) { // selecionando tudo e digitando do 0
+        } else if ((value || '').length > 0) { // select all the input and start new value
           conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
         }
       }
 
-      // excluindo decimal
+      // removing '.'
       if ((previousConformedValue || '') !== emptyString &&
         numberOfDigits(value.substr(valueIndexOfDecimalSymbol + 1)) < decimalLimit &&
         (value || '').length > 0) {

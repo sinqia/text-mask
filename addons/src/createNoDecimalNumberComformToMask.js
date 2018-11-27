@@ -33,9 +33,9 @@ export default function createNoDecimalNumberComformToMask({
   function numberComformToMask(rawValue = emptyString, mask = emptyString, config = {}) {
     let value = rawValue
     const negative = (value.match(minusRegExp) || []).length > 0
-    // tirando 0 as esquerda
+    // removing 0 on left
     if ((value.match(digitRegExp) || []).length > 0) {
-      //erro numero começando com 0
+      //error: number start with 0
       if (negative) {
         while ((value || '').length >= 3 && value[0] === minus && value[1] === '0') {
           value = `${minus}${value.substr(2)}`
@@ -63,7 +63,7 @@ export default function createNoDecimalNumberComformToMask({
     } = conformToMask(value, mask, config)
 
     if (isAddition) {
-      // 0 || -0 digita numero ficando 10 || -10 (remove o 0)
+      // when start with ( 0 || -0 ) and caret position is on the left, when press any value remove '0'
       if (!negative && (conformedValue.match(digitRegExp) || []).length === 2 &&
         (previousConformedValue || '') === '0') {
         conformedValue = conformedValue.substr(0, 1)
@@ -77,22 +77,22 @@ export default function createNoDecimalNumberComformToMask({
       }
 
       if ((previousConformedValue || '') === emptyString && conformedValue !== emptyString) {
-        // começando a digitar a partir de string vazia
+        // starting with empty string
         conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
       }
 
       if ((previousConformedValue || '') !== emptyString && value[0] === minus) {
-        // Selecionando tudo e digitando novo valor (tab)
+        // select all the input and start a new value || (tab)
         conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
       }
     } else {
       if ((previousConformedValue || '') !== emptyString && value[0] === minus &&
-        previousConformedValueLength !== 2) { // previne -0 e aperta o backspace
-        // Selecionando tudo e digitando novo valor (tab)
+        previousConformedValueLength !== 2) { // error: -0 and press backspace
+        // select all the input and start a new value || (tab)
         conformedValue = conformedValue.replace(new RegExp(placeholderChar, 'g'), '0') // change placeholder char by 0
       }
 
-      if ((previousConformedValue || '') !== emptyString && // está excluindo
+      if ((previousConformedValue || '') !== emptyString && // excluding all
         (conformedValue === placeholderChar || conformedValue === `${minus}${placeholderChar}`) // '_' ou '-_'
       ) {
         conformedValue = ''

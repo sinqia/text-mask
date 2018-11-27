@@ -7,14 +7,14 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
-npm run addons:build
+yarn addons:build
 
-npm run addons:verify
+yarn addons:verify
 
 cd ./addons
 
 generatedNpmVersion="$(npm version $version)"
 
-npm publish --access public
+yarn publish --access public
 
 git tag "addons-${generatedNpmVersion}"

@@ -62,7 +62,7 @@ export default function createFixedDecimalScaleAjustCaretPosition({
       return conformedValue.indexOf(decimalSymbol) + 1
     }
 
-    // clicking in '.'
+    // press '.'
     if (((rawValue || '').match(new RegExp(decimalSymbol.replace(/\./g, '\\.'), 'g')) || []).length === 2) {
       return conformedValue.indexOf(decimalSymbol) + 1
     }
