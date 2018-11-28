@@ -51,7 +51,7 @@ export default function adjustCaretPosition({
   // same as the original `previousConformedValue`. We handle this case differently for caret
   // positioning.
   let possiblyHasRejectedChar = false
-  if (!hasRejectedChar !== null && pipeRejected === false && hasRejectedChar === false && isAddition) {
+  if (pipeRejected === false && hasRejectedChar === false && isAddition) {
     possiblyHasRejectedChar = false
   } else if(pipeRejected && isAddition) {
     possiblyHasRejectedChar = true
