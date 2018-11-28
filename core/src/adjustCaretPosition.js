@@ -10,9 +10,7 @@ export default function adjustCaretPosition({
   placeholderChar,
   placeholder,
   indexesOfPipedChars = defaultArray,
-  caretTrapIndexes = defaultArray,
-  hasRejectedChar = null,
-  pipeRejected = false
+  caretTrapIndexes = defaultArray
 }) {
   if (currentCaretPosition === 0 || !rawValue.length) { return 0 }
 
@@ -50,16 +48,9 @@ export default function adjustCaretPosition({
   // `f` so the `rawValue` becomes (1f__), the new `conformedValue` would be (1__), which is the
   // same as the original `previousConformedValue`. We handle this case differently for caret
   // positioning.
-  let possiblyHasRejectedChar = false
-  if (pipeRejected === false && hasRejectedChar === false && isAddition) {
-    possiblyHasRejectedChar = false
-  } else if(pipeRejected && isAddition) {
-    possiblyHasRejectedChar = true
-  } else {
-    possiblyHasRejectedChar = isAddition && (
+  let possiblyHasRejectedChar = isAddition && (
       previousConformedValue === conformedValue ||
       conformedValue === placeholder)
-  }
 
   let startingSearchIndex = 0
   let trackRightCharacter

@@ -79,17 +79,11 @@ export default function createTextMaskInputElement(config) {
 
       // If the `providedMask` is a function. We need to call it at every `update` to get the `mask` array.
       // Then we also need to get the `placeholder`
-      let hasRejectedChar = null
       if (typeof providedMask === strFunction) {
         mask = providedMask(safeRawValue, {currentCaretPosition, previousConformedValue, placeholderChar})
 
         // disable masking if `mask` is `false`
         if (mask === false) { return }
-
-        if(!Array.isArray(mask)) {
-          hasRejectedChar = mask.hasRejectedChar
-          mask = mask.mask
-        }
 
         // mask functions can setup caret traps to have some control over how the caret moves. We need to process
         // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask and return
@@ -128,7 +122,6 @@ export default function createTextMaskInputElement(config) {
       const piped = typeof pipe === strFunction
 
       let pipeResults = {}
-      let pipeRejected = false
 
       // If `pipe` is a function, we call it.
       if (piped) {
@@ -143,7 +136,6 @@ export default function createTextMaskInputElement(config) {
           // If the `pipe` rejects `conformedValue`, we use the `previousConformedValue`, and set `rejected` to `true`.
           pipeResults = {value: previousConformedValue, rejected: true}
           placeholder = previousPlaceholder
-          pipeRejected = true
         } else if (isString(pipeResults)) {
           pipeResults = {value: pipeResults}
         }
@@ -164,9 +156,7 @@ export default function createTextMaskInputElement(config) {
         currentCaretPosition,
         placeholderChar,
         indexesOfPipedChars: pipeResults.indexesOfPipedChars,
-        caretTrapIndexes,
-        hasRejectedChar,
-        pipeRejected
+        caretTrapIndexes
       })
 
       // Text Mask sets the input value to an empty string when the condition below is set. It provides a better UX.

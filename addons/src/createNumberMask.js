@@ -88,16 +88,6 @@ export default function createNumberMask({
       rawValue = rawValue.slice(0, suffixLength * -1)
     }
 
-    //Has Rehected Char
-    let hasRejectedChar = false
-    let rejectedRowValue = rawValue
-    rejectedRowValue = rejectedRowValue.replace(minusRegExp, '')
-    rejectedRowValue = rejectedRowValue.replace(new RegExp(prefix.replace(/\$/g, '\\$'), 'g'), '')
-    rejectedRowValue = rejectedRowValue.replace(new RegExp(suffix.replace(/\$/g, '\\$'), 'g'), '')
-    rejectedRowValue = rejectedRowValue.replace(new RegExp(decimalSymbol.replace(/\./g, '\\.'), 'g'), '')
-    rejectedRowValue = rejectedRowValue.replace(new RegExp(thousandsSeparatorSymbol.replace(/\./g, '\\.'), 'g'), '')
-    hasRejectedChar = (rejectedRowValue.match(nonDigitsRegExp) || []).length > 0
-
     if (hasDecimal && (allowDecimal || requireDecimal)) {
       integer = rawValue.slice(rawValue.slice(0, prefixLength) === prefix ? prefixLength : 0, indexOfLastDecimal)
 
@@ -175,7 +165,7 @@ export default function createNumberMask({
       mask = mask.concat(suffix.split(emptyString))
     }
 
-    return {mask, hasRejectedChar}
+    return mask
   }
 
   numberMask.instanceOf = 'createNumberMask'
