@@ -1,5 +1,5 @@
 import {
-  conformToMask
+  conformToMask as conformToMask
 } from '@snsl/text-mask-core'
 import {
   placeholderChar as defaultPlaceholderChar

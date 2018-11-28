@@ -5,7 +5,7 @@ import {
   placeholderChar as defaultPlaceholderChar
 } from '@snsl/text-mask-core'
 import {
-  createNoDecimalNumberComformToMask
+  default as createNoDecimalNumberComformToMask
 } from './createNoDecimalNumberComformToMask'
 
 const dollarSign = '$'

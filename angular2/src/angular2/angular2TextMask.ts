@@ -11,6 +11,7 @@ export class TextMaskConfig {
   keepCharPositions?: boolean
   showMask?: boolean
   conformToMask?: any
+  adjustCaretPosition?: any
 }
 
 export const MASKEDINPUT_VALUE_ACCESSOR: Provider = {
@@ -46,7 +47,8 @@ export class MaskedInputDirective implements ControlValueAccessor, OnChanges {
     placeholderChar: '_',
     pipe: undefined,
     keepCharPositions: false,
-    conformToMask: undefined
+    conformToMask: undefined,
+    adjustCaretPosition: undefined
   }
 
   onChange = (_: any) => {}

@@ -24,8 +24,10 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       '@snsl/angular2-text-mask': 'npm:@snsl/angular2-text-mask/dist/angular2TextMask.js',
       '@snsl/text-mask-core/dist/textMaskCore': 'npm:@snsl/text-mask-core/dist/textMaskCore.js',
+      '@snsl/text-mask-addons/dist/textMaskAddons': 'npm:@snsl/text-mask-addons/dist/textMaskAddons.js',
       // other libraries
-      'rxjs': 'npm:rxjs'
+      'rxjs': 'npm:rxjs',
+      'traceur': 'npm:traceur/bin'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -38,7 +40,13 @@
       },
       '@snsl/angular2-text-mask': {
         defaultExtension: 'js'
+      },
+      traceur: {
+        main: 'traceur'
       }
+    },
+    babelOptions: {
+      presets: ['es2018']
     }
   });
 })(this);

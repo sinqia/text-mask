@@ -1,5 +1,5 @@
 import {
-  createNoDecimalNumberPipe
+  default as createNoDecimalNumberPipe
 } from './createNoDecimalNumberPipe'
 
 const dollarSign = '$'

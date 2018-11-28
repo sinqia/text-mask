@@ -1,6 +1,6 @@
 {
   "name": "@snsl/angular2-text-mask",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "description": "Angular 2 directive for input text masking",
   "main": "dist/angular2TextMask.js",
   "typings": "./dist/angular2TextMask.d.ts",
@@ -15,7 +15,7 @@
     "test": "karma start",
     "loud-lint": "node_modules/.bin/tslint -c tslint.json src/*.ts test/**/*.ts example/**/*.ts",
     "lint": "node_modules/.bin/tslint -c tslint.json src/*.ts test/**/*.ts example/**/*.ts || true",
-    "ci": "npm run test && npm run loud-lint"
+    "ci": "yarn test && yarn loud-lint"
   },
   "repository": {
     "type": "git",
@@ -62,9 +62,11 @@
     "ts-node": "~1.2.0",
     "tslint": "^3.13.0",
     "typescript": "~2.7.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "traceur": "0.0.96",
+    "@snsl/text-mask-addons": "3.8.3"
   },
   "dependencies": {
-    "@snsl/text-mask-core": "^5.1.3"
+    "@snsl/text-mask-core": "5.1.5"
   }
 }

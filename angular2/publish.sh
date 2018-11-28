@@ -9,10 +9,10 @@ fi
 
 cd ./angular2
 
-npm run build
+yarn build
 
 generatedNpmVersion="$(npm version $version)"
 
-npm publish --access public
+yarn publish --access public
 
 git tag "angular2-${generatedNpmVersion}"
