@@ -67,10 +67,10 @@
   dependencies:
     tsickle "^0.21.0"
 
-"@snsl/text-mask-addons@3.8.3":
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/@snsl/text-mask-addons/-/text-mask-addons-3.8.3.tgz#89e5ae8924dd3387ff3ef7fd4d74f1f1c7530fdd"
-  integrity sha512-iIzTpHvnddD9oqZMbIgYfGDcxT1WdbQcGVpEpfkgqd4vSmi5U7UXn+pEmg8wm9sFJE6gYHj5hoh4uUFL2gE6mw==
+"@snsl/text-mask-addons@3.8.4":
+  version "3.8.4"
+  resolved "https://registry.yarnpkg.com/@snsl/text-mask-addons/-/text-mask-addons-3.8.4.tgz#4407e8d97de599e973a11ea81d0c75c600e2bbde"
+  integrity sha512-XIMP/JFEqQNUMDzWsgullwPyN4rGpWkFVpEKCckLYGLYzOnTxomvGsXcrftqOscyioXnEY2GYI7KEWRIQL79mg==
   dependencies:
     "@snsl/text-mask-core" "^5.1.5"
 
