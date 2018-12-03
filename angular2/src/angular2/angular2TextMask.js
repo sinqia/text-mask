@@ -15,8 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const platform_browser_1 = require("@angular/platform-browser");
-//import { createTextMaskInputElement } from '@snsl/text-mask-core/dist/textMaskCore'
-const createTextMaskInputElement_1 = require("./core/createTextMaskInputElement");
+const textMaskCore_1 = require("@snsl/text-mask-core/dist/textMaskCore");
 class TextMaskConfig {
 }
 exports.TextMaskConfig = TextMaskConfig;
@@ -98,7 +97,7 @@ let MaskedInputDirective = class MaskedInputDirective {
             }
         }
         if (this.inputElement && create) {
-            this.textMaskInputElement = createTextMaskInputElement_1.default(Object.assign({ inputElement: this.inputElement }, this.textMaskConfig));
+            this.textMaskInputElement = textMaskCore_1.createTextMaskInputElement(Object.assign({ inputElement: this.inputElement }, this.textMaskConfig));
         }
     }
     _compositionStart() { this._composing = true; }
@@ -137,6 +136,6 @@ TextMaskModule = __decorate([
     })
 ], TextMaskModule);
 exports.TextMaskModule = TextMaskModule;
-var textMaskCore_1 = require("@snsl/text-mask-core/dist/textMaskCore");
-exports.conformToMask = textMaskCore_1.conformToMask;
+var textMaskCore_2 = require("@snsl/text-mask-core/dist/textMaskCore");
+exports.conformToMask = textMaskCore_2.conformToMask;
 //# sourceMappingURL=angular2TextMask.js.map

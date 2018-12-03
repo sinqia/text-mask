@@ -5,7 +5,7 @@ import {
   createFixedDecimalScaleNumberPipe as createFixedDecimalScaleNumberPipe,
   createFixedDecimalScaleComformToMask as createFixedDecimalScaleComformToMask,
   createFixedDecimalScaleAjustCaretPosition as createFixedDecimalScaleAjustCaretPosition,
-} from '@snsl/text-mask-addons'
+} from '@snsl/text-mask-addons/dist/textMaskAddons'
 
 @Component({
   selector: 'app',
