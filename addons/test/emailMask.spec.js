@@ -1,3 +1,5 @@
+require('babel-core/register')({plugins: ['babel-plugin-rewire']})
+
 import createTextMaskInputElement from '../../core/src/createTextMaskInputElement'
 
 const emailMask = (isVerify()) ?

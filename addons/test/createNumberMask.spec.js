@@ -1,3 +1,5 @@
+require('babel-core/register')({plugins: ['babel-plugin-rewire']})
+
 const createNumberMask = (isVerify()) ?
   require('../dist/createNumberMask.js').default :
   require('../src/createNumberMask.js').default
@@ -224,6 +226,13 @@ describe('createNumberMask', () => {
     it('allows one leading zero followed by a fraction', function() {
       let numberMask = createNumberMask({allowDecimal: true})
       expect(numberMask('0.12')).to.deep.equal(['$', /\d/, '[]', '.', '[]', /\d/, /\d/])
+    })
+
+    it('can fixed the length of the fraction', function() {
+      let numberMask = createNumberMask({requireDecimal: true, fixedDecimalScale: true, prefix: '', decimalLimit: 4})
+      expect(numberMask('12')).to.deep.equal([/\d/, /\d/, '[]', '.', '[]', /\d/, /\d/, /\d/, /\d/])
+      expect(numberMask('.')).to.deep.equal(['0', '.', /\d/, /\d/, /\d/, /\d/])
+      expect(numberMask('')).to.deep.equal([/\d/, '.', /\d/, /\d/, /\d/, /\d/])
     })
   })
 })

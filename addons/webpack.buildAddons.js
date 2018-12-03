@@ -10,17 +10,17 @@ module.exports = {
     emailMask: [path.join(__dirname, './src/emailMask.js')]
   },
 
+  module: {
+    loaders: [
+      {test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/}
+    ]
+  },
+
   output: {
     path: path.join(__dirname, './dist'),
     filename: '[name].js',
     library: '[name]',
     libraryTarget: 'umd'
-  },
-
-  module: {
-    loaders: [
-      {test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/}
-    ]
   },
 
   resolve: {

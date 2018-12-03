@@ -1,15 +1,18 @@
-import {Component} from '@angular/core'
+import {Component, AfterViewInit, ElementRef, ViewChild, AfterViewChecked} from '@angular/core'
 import {FormControl} from '@angular/forms'
-import { createNumberMask as createNumberMask } from '@snsl/text-mask-addons/dist/textMaskAddons'
-import { createFixedDecimalScaleNumberPipe } from '@snsl/text-mask-addons/dist/textMaskAddons'
-import { createFixedDecimalScaleComformToMask } from '@snsl/text-mask-addons/dist/textMaskAddons'
-import { createFixedDecimalScaleAjustCaretPosition } from '@snsl/text-mask-addons/dist/textMaskAddons'
+import { 
+  createNumberMask as createNumberMask,
+  createFixedDecimalScaleNumberPipe as createFixedDecimalScaleNumberPipe,
+  createFixedDecimalScaleComformToMask as createFixedDecimalScaleComformToMask,
+  createFixedDecimalScaleAjustCaretPosition as createFixedDecimalScaleAjustCaretPosition,
+} from '@snsl/text-mask-addons'
 
 @Component({
   selector: 'app',
   templateUrl: 'app.html'
 })
-export default class AppComponent {
+export default class AppComponent implements AfterViewInit {
+
   public myModel: string
   public modelWithValue: string
   public formControlInput: FormControl = new FormControl()
@@ -17,6 +20,7 @@ export default class AppComponent {
   public modelWithValue2: string
   public modelWithValue3: string
   public modelWithValue4: string
+  @ViewChild('maskedDecimal3') input:ElementRef;
 
 
   private properties = {
@@ -87,5 +91,13 @@ export default class AppComponent {
     this.modelWithValue3 = '0'
     this.modelWithValue4 = '0'
     this.formControlInput.setValue('5555551234')
+  }
+
+  ngAfterViewInit(): void {
+    this.input.nativeElement.addEventListener("blur", () => this.onchange());
+  }
+
+  onchange() {
+    console.log('aisim')
   }
 }

@@ -1,4 +1,5 @@
-require('babel-core/register')({plugins: ['babel-plugin-rewire']})
+const babel = require('babel-core/register')
+babel({plugins: ['babel-plugin-rewire']})
 
 import packageJson from '../package.json'
 import conformToMask from '../src/conformToMask'
@@ -358,6 +359,30 @@ describe('createTextMaskInputElement', () => {
       inputElement.value = '234' // <- you have to change the value
       textMaskControl.update()
       expect(inputElement.value).to.equal('(234) ___-____')
+    })
+
+    it('custon conformMask passed to createTextMaskInputElement', () => {
+      const conformToMaskSpy = sinon.spy((rawValue, mask, config = {}) => { return {conformedValue: '12345'} })
+      const mask = [/\d/, /\d/, /\d/, /\d/, /\d/]
+      const textMaskControl = createTextMaskInputElement({inputElement, mask, conformToMask: conformToMaskSpy})
+
+      inputElement.value = '2'
+      textMaskControl.update()
+
+      expect(inputElement.value).to.equal('12345')
+      expect(conformToMaskSpy.callCount).to.equal(1)
+    })
+
+    it('custon adjustCaretPosition passed to createTextMaskInputElement', () => {
+      const adjustCaretPositionSpy = sinon.spy(() => { return 3 })
+      const mask = [/\d/, /\d/, /\d/, /\d/, /\d/]
+      const textMaskControl = createTextMaskInputElement({inputElement, mask,
+        adjustCaretPosition: adjustCaretPositionSpy})
+
+      inputElement.value = '2'
+      textMaskControl.update()
+
+      expect(adjustCaretPositionSpy.callCount).to.equal(1)
     })
   })
 })

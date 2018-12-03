@@ -77,18 +77,24 @@ export default function createFixedDecimalScaleNumberPipe({
 
     // Negative Number with minus Not in 0 Position
     const negative = ((value || '').match(minusRegExp) || []).length > 0
+    const negativeConformedValue = ((conformedValue || '').match(minusRegExp) || []).length > 0
     const previousNegative = ((previousConformedValue || '').match(minusRegExp) || []).length > 0
     if (negative && value[0] !== minus) {
       return false
     }
 
+    let decimalSymbolPosition = value.indexOf(decimalSymbol)
+    if (decimalSymbolPosition < 0) {
+      decimalSymbolPosition = value.length
+    }
+
     // interger limit
-    if (integerLimit !== null && numberOfDigits(value.substr(0, value.indexOf(decimalSymbol))) > integerLimit) {
+    if (integerLimit !== null && numberOfDigits(value.substr(0, decimalSymbolPosition)) > integerLimit) {
       return false
     }
     // decimal limit
-    if (numberOfDigits(value.substr(value.indexOf(decimalSymbol) + 1)) > decimalLimit &&
-      value.substr(value.length - 1) !== '0') { // posso por um a mais desde que seja para excluir o 0
+    if (numberOfDigits(value.substr(decimalSymbolPosition)) > decimalLimit &&
+      value.substr(value.length - 1) !== '0') { // only if last decimal <> 0
       return false
     }
 
@@ -110,8 +116,10 @@ export default function createFixedDecimalScaleNumberPipe({
     }
 
     // case '00'
-    if (isAddition &&
-      (negative ? value[1] === '0' && value[2] === '0' : value[0] === '0' && value[1] === '0')) {
+    if (negativeConformedValue ? 
+        value[1] === '0' && (((conformedValue[2] || '').match(digitRegExp) || []).length > 0 || (conformedValue[2] || '') === thousandsSeparatorSymbol ) : 
+        value[0] === '0' && (((conformedValue[1] || '').match(digitRegExp) || []).length > 0 || (conformedValue[1] || '') === thousandsSeparatorSymbol )
+      ) {
       return false
     }
 

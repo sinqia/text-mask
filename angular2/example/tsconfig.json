@@ -9,6 +9,7 @@
     "removeComments": false,
     "noImplicitAny": false,
     "allowJs": true,
+    "noEmit": true,
     "lib": [
       "es2018",
       "dom"

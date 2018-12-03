@@ -20,5 +20,8 @@
     "input formatting",
     "text formatting",
     "string formatting"
-  ]
+  ],
+  "devDependencies": {
+    "@types/babel-core": "^6.25.5"
+  }
 }

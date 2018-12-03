@@ -1,3 +1,5 @@
+require('babel-core/register')({plugins: ['babel-plugin-rewire']})
+
 const addonsBundle = (isVerify()) ?
   require('../dist/textMaskAddons.js') :
   require('../src/index.js')

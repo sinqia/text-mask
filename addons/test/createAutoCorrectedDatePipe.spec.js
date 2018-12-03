@@ -1,3 +1,5 @@
+require('babel-core/register')({plugins: ['babel-plugin-rewire']})
+
 const createAutoCorrectedDatePipe = (isVerify()) ?
   require('../dist/createAutoCorrectedDatePipe.js').default :
   require('../src/createAutoCorrectedDatePipe.js').default

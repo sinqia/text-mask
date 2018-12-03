@@ -48,8 +48,10 @@ export default function createNoDecimalNumberPipe({
       return false
     }
 
-    // Negative Number with minus Not in 0 Position
     const negative = (value.match(minusRegExp) || []).length > 0
+    const negativeConformedValue = ((conformedValue || '').match(minusRegExp) || []).length > 0
+
+    // Negative Number with minus Not in 0 Position
     if (negative && value[0] !== minus) {
       return false
     }
@@ -74,8 +76,12 @@ export default function createNoDecimalNumberPipe({
     }
 
     // case '00'
-    if (isAddition &&
-      (negative ? value[1] === '0' && value[2] === '0' : value[0] === '0' && value[1] === '0')) {
+    if (negativeConformedValue ?
+      value[1] === '0' && (((conformedValue[2] || '').match(digitRegExp) || []).length > 0 ||
+        (conformedValue[2] || '') === thousandsSeparatorSymbol) :
+      value[0] === '0' && (((conformedValue[1] || '').match(digitRegExp) || []).length > 0 ||
+        (conformedValue[1] || '') === thousandsSeparatorSymbol)
+    ) {
       return false
     }
 

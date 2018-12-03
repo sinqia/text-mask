@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@snsl/text-mask-core@^5.1.5":
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/@snsl/text-mask-core/-/text-mask-core-5.1.5.tgz#1b284d1fbbbf35656924e3cddd28e782abcfc09c"
-  integrity sha512-3M+Ys5NuTG1cZcfSJQXA1kWFqWIJAxPZs8WqNIjQNAjuVgvmOQ/FBBb46oHT/Q0nCokgX/8GNk/fykZP7dzAMg==
+"@snsl/text-mask-core@5.1.6":
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/@snsl/text-mask-core/-/text-mask-core-5.1.6.tgz#8c4b9af8c81d1e1c91abfe6191f9386b2e013b8b"
+  integrity sha512-9nxGWM8BmbBCX8AyIta6Bzqlekm8ZK4GKnZu57KXDC6wjpx/oi9MTzFSCf+R+CwJmABrbGz6gc5bRbmpdsm8NQ==
