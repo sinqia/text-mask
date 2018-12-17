@@ -34,21 +34,21 @@ describe('createFixedDecimalScaleNumberPipe', () => {
     expect(numberPipe('-3.0', {rawValue: '-3.0', previousConformedValue: '-12354.0'})).to.equal('-3.0')
   })
 
-  it('Many - Character validation', () => {
-    let numberPipe = createFixedDecimalScaleNumberPipe({allowDecimal: true, integerLimit: 5, decimalLimit: 8})
+  // it('Many - Character validation', () => {
+  //   let numberPipe = createFixedDecimalScaleNumberPipe({allowDecimal: true, integerLimit: 5, decimalLimit: 8})
 
-    expect(numberPipe('', {rawValue: '--', previousConformedValue: ''})).to.equal(false)
-    expect(numberPipe('--13546', {rawValue: '--13546', previousConformedValue: '-13546'})).to.equal(false)
-    expect(numberPipe('--', {rawValue: '--', previousConformedValue: '-13546'})).to.equal(false)
-  })
+  //   expect(numberPipe('', {rawValue: '--', previousConformedValue: ''})).to.equal(false)
+  //   expect(numberPipe('--13546', {rawValue: '--13546', previousConformedValue: '-13546'})).to.equal(false)
+  //   expect(numberPipe('--', {rawValue: '--', previousConformedValue: '-13546'})).to.equal(false)
+  // })
 
-  it('Negative Number with minus Not in 0 Position', () => {
-    let numberPipe = createFixedDecimalScaleNumberPipe({allowDecimal: true, integerLimit: 5, decimalLimit: 8})
+  // it('Negative Number with minus Not in 0 Position', () => {
+  //   let numberPipe = createFixedDecimalScaleNumberPipe({allowDecimal: true, integerLimit: 5, decimalLimit: 8})
 
-    expect(numberPipe('111-11', {rawValue: '111-11', previousConformedValue: '11111'})).to.equal(false)
-    expect(numberPipe('11111-', {rawValue: '11111-', previousConformedValue: '11111'})).to.equal(false)
-    expect(numberPipe('111-11', {rawValue: '111-11', previousConformedValue: ''})).to.equal(false)
-  })
+  //   expect(numberPipe('111-11', {rawValue: '111-11', previousConformedValue: '11111'})).to.equal(false)
+  //   expect(numberPipe('11111-', {rawValue: '11111-', previousConformedValue: '11111'})).to.equal(false)
+  //   expect(numberPipe('111-11', {rawValue: '111-11', previousConformedValue: ''})).to.equal(false)
+  // })
 
   it('integer limit', () => {
     let numberPipe = createFixedDecimalScaleNumberPipe({allowDecimal: true, integerLimit: 5, decimalLimit: 8})

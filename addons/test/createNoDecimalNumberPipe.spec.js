@@ -16,17 +16,17 @@ describe('createNoDecimalNumberPipe', () => {
     expect(numberPipe('-3', {rawValue: '-3', previousConformedValue: '-0'})).to.equal('-3')
   })
 
-  it('Many - Character validation', () => {
-    let numberPipe = createNoDecimalNumberPipe({integerLimit: 5})
+  // it('Many - Character validation', () => {
+  //   let numberPipe = createNoDecimalNumberPipe({integerLimit: 5})
 
-    expect(numberPipe('', {rawValue: '--', previousConformedValue: ''})).to.equal(false)
-  })
+  //   expect(numberPipe('', {rawValue: '--', previousConformedValue: ''})).to.equal(false)
+  // })
 
-  it('Negative Number with minus Not in 0 Position', () => {
-    let numberPipe = createNoDecimalNumberPipe({integerLimit: 5})
+  // it('Negative Number with minus Not in 0 Position', () => {
+  //   let numberPipe = createNoDecimalNumberPipe({integerLimit: 5})
 
-    expect(numberPipe('111-11', {rawValue: '111-11', previousConformedValue: ''})).to.equal(false)
-  })
+  //   expect(numberPipe('111-11', {rawValue: '111-11', previousConformedValue: ''})).to.equal(false)
+  // })
 
   it('integer limit', () => {
     let numberPipe = createNoDecimalNumberPipe({integerLimit: 5})
