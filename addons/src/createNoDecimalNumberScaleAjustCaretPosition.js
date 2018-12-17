@@ -1,10 +1,6 @@
 import {
-  adjustCaretPosition as adjustCaretPositionDefault
+  default as adjustCaretPositionDefault
 } from '@snsl/text-mask-core'
-
-import {
-  default as createNoDecimalNumberScaleAjustCaretPosition
-} from './createNoDecimalNumberScaleAjustCaretPosition'
 
 const defaultArray = []
 const emptyString = ''
@@ -18,7 +14,7 @@ const minusRegExp = /-/g
 // const digitRegExp = /\d/
 // const caretTrap = '[]'
 
-export default function createFixedDecimalScaleAjustCaretPosition({
+export default function createNoDecimalNumberScaleAjustCaretPosition({
   prefix = dollarSign,
   suffix = emptyString,
   includeThousandsSeparator = true,
@@ -43,43 +39,6 @@ export default function createFixedDecimalScaleAjustCaretPosition({
     indexesOfPipedChars = defaultArray,
     caretTrapIndexes = defaultArray
   }) {
-    if (allowDecimal === false || decimalLimit === 0) {
-      return createNoDecimalNumberScaleAjustCaretPosition({
-        prefix: prefix,
-        suffix: suffix,
-        includeThousandsSeparator: includeThousandsSeparator,
-        thousandsSeparatorSymbol: thousandsSeparatorSymbol,
-        allowDecimal: allowDecimal,
-        decimalSymbol: decimalSymbol,
-        decimalLimit: decimalLimit,
-        requireDecimal: requireDecimal,
-        allowNegative: allowNegative,
-        allowLeadingZeroes: allowLeadingZeroes,
-        fixedDecimalScale: fixedDecimalScale,
-        integerLimit: integerLimit
-      })({
-        previousConformedValue,
-        previousPlaceholder,
-        conformedValue,
-        placeholder,
-        rawValue,
-        currentCaretPosition,
-        placeholderChar,
-        indexesOfPipedChars,
-        caretTrapIndexes
-      })
-    }
-
-    // initializating with '.'
-    if (rawValue === decimalSymbol) {
-      return conformedValue.indexOf(decimalSymbol) + 1
-    }
-
-    // press '.'
-    if (((rawValue || '').match(new RegExp(decimalSymbol.replace(/\./g, '\\.'), 'g')) || []).length === 2) {
-      return conformedValue.indexOf(decimalSymbol) + 1
-    }
-
     // Store lengths for faster performance?
     const rawValueLength = rawValue.length
     const previousConformedValueLength = previousConformedValue.length
@@ -91,19 +50,10 @@ export default function createFixedDecimalScaleAjustCaretPosition({
     // If the edit length is positive, that means the user is adding characters, not deleting.
     const isAddition = editLength > 0
 
-    // add '0' in decimal
-    if (isAddition && editLength === 1 &&
-      previousConformedValue === conformedValue &&
-      conformedValue.indexOf(decimalSymbol) + 1 < currentCaretPosition &&
-      rawValue[currentCaretPosition - 1] === '0' &&
-      conformedValue[conformedValue.length - 1] === '0'
-    ) {
-      return currentCaretPosition
-    }
-
-    if (allowNegative) {
+    if (allowDecimal) {
       const negative = ((rawValue || '').match(minusRegExp) || []).length % 2 === 1
       const previousNegative = ((previousConformedValue || '').match(minusRegExp) || []).length % 2 === 1
+
       // add '-'
       if (isAddition && editLength === 1 && negative !== previousNegative) {
         if (negative) {

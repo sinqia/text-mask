@@ -2,7 +2,7 @@ const dollarSign = '$'
 const emptyString = ''
 const comma = ','
 const period = '.'
-const minus = '-'
+// const minus = '-'
 const minusRegExp = /-/
 const nonDigitsRegExp = /\D+/g
 const number = 'number'
@@ -70,11 +70,9 @@ export default function createNumberMask({
       return prefix.split(emptyString).concat(middleMask).concat(suffix.split(emptyString))
     }
 
-    const isNegative = (rawValue[0] === minus) && allowNegative
-    //If negative remove "-" sign
-    if (isNegative) {
-      rawValue = rawValue.toString().substr(1)
-    }
+    const isNegative = ((rawValue.match(new RegExp(minusRegExp, 'g')) || []).length % 2 === 1) && allowNegative
+    //remove "-" sign
+    rawValue = rawValue.toString().replace(new RegExp(minusRegExp, 'g'), '')
 
     const indexOfLastDecimal = rawValue.lastIndexOf(decimalSymbol)
     const hasDecimal = indexOfLastDecimal !== -1

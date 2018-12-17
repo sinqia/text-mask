@@ -31,8 +31,18 @@ export default function createNoDecimalNumberComformToMask({
   integerLimit = null
 } = {}) {
   function numberComformToMask(rawValue = emptyString, mask = emptyString, config = {}) {
+    const {
+      placeholderChar = defaultPlaceholderChar,
+      previousConformedValue,
+    } = config
+
+    const previousConformedValueLength = (previousConformedValue || '').length
+    const rawValueLength = (rawValue || '').length
+    const editDistance = rawValueLength - previousConformedValueLength
+    const isAddition = editDistance > 0
     let value = rawValue
-    const negative = (value.match(minusRegExp) || []).length > 0
+    const negative = (value.match(new RegExp(minusRegExp, 'g')) || []).length % 2 === 1
+
     // removing 0 on left
     if ((value.match(digitRegExp) || []).length > 0) {
       //error: number start with 0
@@ -47,15 +57,11 @@ export default function createNoDecimalNumberComformToMask({
       }
     }
 
-    const {
-      placeholderChar = defaultPlaceholderChar,
-      previousConformedValue,
-    } = config
-
-    const previousConformedValueLength = (previousConformedValue || '').length
-    const rawValueLength = (rawValue || '').length
-    const editDistance = rawValueLength - previousConformedValueLength
-    const isAddition = editDistance > 0
+    // add '-' in anywhere
+    value = value.replace(new RegExp(minusRegExp, 'g'), '')
+    if(negative) {
+      value = `${minus}${value}`
+    }
 
     let {
       conformedValue,
@@ -63,12 +69,15 @@ export default function createNoDecimalNumberComformToMask({
     } = conformToMask(value, mask, config)
 
     if (isAddition) {
+      const digitMatch = (conformedValue.match(digitRegExp) || [])
       // when start with ( 0 || -0 ) and caret position is on the left, when press any value remove '0'
-      if (!negative && (conformedValue.match(digitRegExp) || []).length === 2 &&
-        (previousConformedValue || '') === '0') {
+      if (!negative && digitMatch.length === 2 &&
+        (previousConformedValue || '') === '0' &&
+        digitMatch[1] === '0') {
         conformedValue = conformedValue.substr(0, 1)
-      } else if (negative && (conformedValue.match(digitRegExp) || []).length === 2 &&
-        (previousConformedValue || '') === '-0') {
+      } else if (negative && digitMatch.length === 2 &&
+        (previousConformedValue || '') === '-0' &&
+        digitMatch[1] === '0') {
         conformedValue = conformedValue.substr(0, 2)
       }
 

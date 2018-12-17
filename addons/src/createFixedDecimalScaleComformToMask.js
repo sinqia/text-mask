@@ -90,6 +90,12 @@ export default function createFixedDecimalScaleComformToMask({
       }
     }
 
+    // add '-' in anywhere
+    value = value.replace(new RegExp(minusRegExp, 'g'), '')
+    if(negative) {
+      value = `${minus}${value}`
+    }
+
     let {
       conformedValue,
       meta
@@ -100,14 +106,17 @@ export default function createFixedDecimalScaleComformToMask({
     const previousIndexOfDecimalSymbol = (previousConformedValue || '').indexOf(decimalSymbol)
 
     if (isAddition) {
+      const conformedMatch = ((conformedValue || '').match(digitRegExp) || [])
       // when start with ( 0 || -0 ) and caret position is on the left, when press any value remove '0'
       if (!negative &&
         numberOfDigits(conformedValue.substr(0, indexOfDecimalSymbol)) === 2 &&
-        (previousConformedValue || '').substr(0, previousIndexOfDecimalSymbol) === '0') {
+        (previousConformedValue || '').substr(0, previousIndexOfDecimalSymbol) === '0' &&
+        conformedMatch[1] === '0') {
         conformedValue = `${conformedValue.substr(0, 1)}${conformedValue.substr(2)}`
       } else if (negative &&
         numberOfDigits(conformedValue.substr(0, indexOfDecimalSymbol)) === 2 &&
-        (previousConformedValue || '').substr(0, previousIndexOfDecimalSymbol) === '-0') {
+        (previousConformedValue || '').substr(0, previousIndexOfDecimalSymbol) === '-0' &&
+        conformedMatch[1] === '0') {
         conformedValue = `${conformedValue.substr(0, 2)}${conformedValue.substr(3)}`
       }
 

@@ -59,27 +59,18 @@ export default function createFixedDecimalScaleNumberPipe({
 
     const value = rawValue
 
+    const negative = ((value || '').match(minusRegExp) || []).length > 0
+    const negativeConformedValue = ((conformedValue || '').match(minusRegExp) || []).length > 0
+    const previousNegative = ((previousConformedValue || '').match(minusRegExp) || []).length > 0
+
     // No Number Character
     if ((value.match(new RegExp(`[^0-9${thousandsSeparatorSymbol}${decimalSymbol}${minus}]`, 'g')) || []).length > 0) {
-      return false
-    }
-
-    // Only 1 Minus
-    if ((value.match(minusRegExp) || []).length > 1) {
       return false
     }
 
     // many '.'
     const decimalSymbolCount = numberOfdecimalSymbol(value)
     if (decimalSymbolCount > 1) {
-      return false
-    }
-
-    // Negative Number with minus Not in 0 Position
-    const negative = ((value || '').match(minusRegExp) || []).length > 0
-    const negativeConformedValue = ((conformedValue || '').match(minusRegExp) || []).length > 0
-    const previousNegative = ((previousConformedValue || '').match(minusRegExp) || []).length > 0
-    if (negative && value[0] !== minus) {
       return false
     }
 
@@ -116,9 +107,11 @@ export default function createFixedDecimalScaleNumberPipe({
     }
 
     // case '00'
-    if (negativeConformedValue ? 
-        value[1] === '0' && (((conformedValue[2] || '').match(digitRegExp) || []).length > 0 || (conformedValue[2] || '') === thousandsSeparatorSymbol ) : 
-        value[0] === '0' && (((conformedValue[1] || '').match(digitRegExp) || []).length > 0 || (conformedValue[1] || '') === thousandsSeparatorSymbol )
+    if (negativeConformedValue ?
+        value[1] === '0' &&
+          (numberOfDigits(conformedValue[2]) > 0 || (conformedValue[2] || '') === thousandsSeparatorSymbol) :
+        value[0] === '0' &&
+          (numberOfDigits(conformedValue[1]) > 0 || (conformedValue[1] || '') === thousandsSeparatorSymbol)
       ) {
       return false
     }

@@ -5,4 +5,5 @@ export function createFixedDecimalScaleComformToMask(a: any): any
 export function createNoDecimalNumberPipe(a: any): any
 export function createNoDecimalNumberComformToMask(a: any): any
 export function createFixedDecimalScaleAjustCaretPosition(a: any): any
+export function createNoDecimalNumberScaleAjustCaretPosition(a: any): any
 export const emailMask:any

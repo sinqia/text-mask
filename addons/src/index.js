@@ -6,3 +6,4 @@ export {default as createFixedDecimalScaleComformToMask} from './createFixedDeci
 export {default as createNoDecimalNumberPipe} from './createNoDecimalNumberPipe'
 export {default as createNoDecimalNumberComformToMask} from './createNoDecimalNumberComformToMask'
 export {default as createFixedDecimalScaleAjustCaretPosition} from './createFixedDecimalScaleAjustCaretPosition'
+export {default as createNoDecimalNumberScaleAjustCaretPosition} from './createNoDecimalNumberScaleAjustCaretPosition'

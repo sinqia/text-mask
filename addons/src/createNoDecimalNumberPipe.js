@@ -43,18 +43,9 @@ export default function createNoDecimalNumberPipe({
       return false
     }
 
-    // Only 1 Minus
-    if ((value.match(minusRegExp) || []).length > 1) {
-      return false
-    }
-
-    const negative = (value.match(minusRegExp) || []).length > 0
-    const negativeConformedValue = ((conformedValue || '').match(minusRegExp) || []).length > 0
-
-    // Negative Number with minus Not in 0 Position
-    if (negative && value[0] !== minus) {
-      return false
-    }
+    const negative = (value.match(minusRegExp) || []).length % 2 === 1
+    const negativeConformedValue = ((conformedValue || '').match(minusRegExp) || []).length % 2 === 1
+    const negativePrevious = ((previousConformedValue || '').match(minusRegExp) || []).length % 2 === 1
 
     // integer limit
     if (integerLimit !== null && numberOfDigits(value) > integerLimit) {
@@ -70,16 +61,16 @@ export default function createNoDecimalNumberPipe({
     if (isAddition &&
       (previousConformedValue || '') !== emptyString &&
       (negative ? value[1] === '0' : value[0] === '0') &&
-      previousConformedValue[0] !== '0'
+      (negativePrevious ? previousConformedValue[1] !== '0' : previousConformedValue[0] !== '0')
     ) {
       return false
     }
 
     // case '00'
     if (negativeConformedValue ?
-      value[1] === '0' && (((conformedValue[2] || '').match(digitRegExp) || []).length > 0 ||
+      value[1] === '0' && (numberOfDigits(conformedValue[2]) > 0 ||
         (conformedValue[2] || '') === thousandsSeparatorSymbol) :
-      value[0] === '0' && (((conformedValue[1] || '').match(digitRegExp) || []).length > 0 ||
+      value[0] === '0' && (numberOfDigits(conformedValue[1]) > 0 ||
         (conformedValue[1] || '') === thousandsSeparatorSymbol)
     ) {
       return false
