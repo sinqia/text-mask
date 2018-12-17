@@ -1,5 +1,5 @@
 import {
-  default as adjustCaretPositionDefault
+  adjustCaretPosition as adjustCaretPositionDefault
 } from '@snsl/text-mask-core'
 
 const defaultArray = []
