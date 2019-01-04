@@ -78,10 +78,12 @@ let MaskedInputDirective = class MaskedInputDirective {
         if (!this._compositionMode || (this._compositionMode && !this._composing)) {
             this._setupMask();
             if (this.textMaskInputElement !== undefined) {
+                const oldValue = this.textMaskInputElement.state.previousConformedValue;
                 this.textMaskInputElement.update(value);
                 // get the updated value
                 value = this.inputElement.value;
-                this.onChange(value);
+                if (value != oldValue)
+                    this.onChange(value);
             }
         }
     }

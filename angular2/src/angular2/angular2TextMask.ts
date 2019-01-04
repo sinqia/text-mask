@@ -101,12 +101,19 @@ export class MaskedInputDirective implements ControlValueAccessor, OnChanges {
     if (!this._compositionMode || (this._compositionMode && !this._composing)) {
       this._setupMask()
 
+	  
+	  
       if (this.textMaskInputElement !== undefined) {
-        this.textMaskInputElement.update(value)
+		const oldValue = this.textMaskInputElement.state.previousConformedValue;
+        
+		this.textMaskInputElement.update(value)
         
         // get the updated value
-        value = this.inputElement.value
-        this.onChange(value)
+		value = this.inputElement.value
+		
+		if(value != oldValue)
+			this.onChange(value)
+
       }
     }
   }

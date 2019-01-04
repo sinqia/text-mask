@@ -95,6 +95,7 @@ export default class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.input.nativeElement.addEventListener("blur", () => this.onchange());
+	this.formControlInput.valueChanges.subscribe(v => console.log(v));
   }
 
   onchange() {
