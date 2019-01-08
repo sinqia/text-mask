@@ -28,5 +28,11 @@ Seguindo a logica, você deve criar um arquivo de nome 'angular2/example/addons/
 dele apenas o seguinte codigo :
 
 ```typescript
-
+export default function createNumberMask(conf: any);
 ```
+
+Fazer isso para cada um dos arquivos.
+
+Após feito isso basta executar o projeto do angular2 e ele estara pronto para ser depurado no navegador.
+
+
