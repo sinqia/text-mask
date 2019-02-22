@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const platform_browser_1 = require("@angular/platform-browser");
-const textMaskCore_1 = require("@snsl/text-mask-core/dist/textMaskCore");
+const textMaskCore_1 = require("@sinqia/text-mask-core/dist/textMaskCore");
 class TextMaskConfig {
 }
 exports.TextMaskConfig = TextMaskConfig;
@@ -138,6 +138,6 @@ TextMaskModule = __decorate([
     })
 ], TextMaskModule);
 exports.TextMaskModule = TextMaskModule;
-var textMaskCore_2 = require("@snsl/text-mask-core/dist/textMaskCore");
+var textMaskCore_2 = require("@sinqia/text-mask-core/dist/textMaskCore");
 exports.conformToMask = textMaskCore_2.conformToMask;
 //# sourceMappingURL=angular2TextMask.js.map

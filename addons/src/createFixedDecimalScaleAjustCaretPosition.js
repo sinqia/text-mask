@@ -1,6 +1,6 @@
 import {
   adjustCaretPosition as adjustCaretPositionDefault
-} from '@snsl/text-mask-core'
+} from '@sinqia/text-mask-core'
 
 import {
   default as createNoDecimalNumberScaleAjustCaretPosition

@@ -67,16 +67,16 @@
   dependencies:
     tsickle "^0.21.0"
 
-"@snsl/text-mask-addons@3.8.11":
+"@sinqia/text-mask-addons@3.8.11":
   version "3.8.11"
-  resolved "https://registry.yarnpkg.com/@snsl/text-mask-addons/-/text-mask-addons-3.8.11.tgz#ff6d75a0d71766d0d63a59016c158982eecadca2"
+  resolved "https://registry.yarnpkg.com/@sinqia/text-mask-addons/-/text-mask-addons-3.8.11.tgz#ff6d75a0d71766d0d63a59016c158982eecadca2"
   integrity sha512-7p8WqKXFjjaGhCxVJ0SP0bawMRqvelFzn3mUNVAZU/yFPqLxKw5+Xw4BWuf5b5AVcH1zHm5CLsFJ40EaozhcIA==
   dependencies:
-    "@snsl/text-mask-core" "5.1.6"
+    "@sinqia/text-mask-core" "5.1.6"
 
-"@snsl/text-mask-core@5.1.6":
+"@sinqia/text-mask-core@5.1.6":
   version "5.1.6"
-  resolved "https://registry.yarnpkg.com/@snsl/text-mask-core/-/text-mask-core-5.1.6.tgz#8c4b9af8c81d1e1c91abfe6191f9386b2e013b8b"
+  resolved "https://registry.yarnpkg.com/@sinqia/text-mask-core/-/text-mask-core-5.1.6.tgz#8c4b9af8c81d1e1c91abfe6191f9386b2e013b8b"
   integrity sha512-9nxGWM8BmbBCX8AyIta6Bzqlekm8ZK4GKnZu57KXDC6wjpx/oi9MTzFSCf+R+CwJmABrbGz6gc5bRbmpdsm8NQ==
 
 "@types/core-js@^0.9.34":

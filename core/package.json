@@ -1,5 +1,5 @@
 {
-  "name": "@snsl/text-mask-core",
+  "name": "@sinqia/text-mask-core",
   "version": "5.1.7",
   "description": "Core of https://github.com/text-mask/text-mask",
   "main": "dist/textMaskCore.js",

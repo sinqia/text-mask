@@ -1,9 +1,9 @@
 import {
   conformToMask as conformToMask
-} from '@snsl/text-mask-core'
+} from '@sinqia/text-mask-core'
 import {
   placeholderChar as defaultPlaceholderChar
-} from '@snsl/text-mask-core'
+} from '@sinqia/text-mask-core'
 
 const dollarSign = '$'
 const emptyString = ''

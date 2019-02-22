@@ -23,7 +23,7 @@ Trace:
 
 npm manifest: 
   {
-    "name": "@snsl/text-mask-addons",
+    "name": "@sinqia/text-mask-addons",
     "version": "3.8.4",
     "description": "Addons for Text Mask https://github.com/SeniorSolution/text-mask",
     "main": "dist/textMaskAddons.js",
@@ -52,7 +52,7 @@ npm manifest:
       "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-      "@snsl/text-mask-core": "^5.1.5"
+      "@sinqia/text-mask-core": "^5.1.5"
     },
     "devDependencies": {
       "babel-cli": "^6.4.5",
@@ -75,9 +75,9 @@ Lockfile:
   # yarn lockfile v1
   
   
-  "@snsl/text-mask-core@^5.1.5":
+  "@sinqia/text-mask-core@^5.1.5":
     version "5.1.5"
-    resolved "https://registry.yarnpkg.com/@snsl/text-mask-core/-/text-mask-core-5.1.5.tgz#1b284d1fbbbf35656924e3cddd28e782abcfc09c"
+    resolved "https://registry.yarnpkg.com/@sinqia/text-mask-core/-/text-mask-core-5.1.5.tgz#1b284d1fbbbf35656924e3cddd28e782abcfc09c"
     integrity sha512-3M+Ys5NuTG1cZcfSJQXA1kWFqWIJAxPZs8WqNIjQNAjuVgvmOQ/FBBb46oHT/Q0nCokgX/8GNk/fykZP7dzAMg==
   
   babel-plugin-rewire@1.2.0:
