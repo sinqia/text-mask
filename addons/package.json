@@ -1,6 +1,6 @@
 {
   "name": "@snsl/text-mask-addons",
-  "version": "3.8.11",
+  "version": "3.8.12",
   "description": "Addons for Text Mask https://github.com/SeniorSolution/text-mask",
   "main": "dist/textMaskAddons.js",
   "author": "M.K. Safi <msafi@msafi.com>",
@@ -22,6 +22,6 @@
     "string formatting"
   ],
   "dependencies": {
-    "@snsl/text-mask-core": "5.1.6"
+    "@snsl/text-mask-core": "5.1.8"
   }
 }
