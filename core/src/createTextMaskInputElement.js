@@ -202,7 +202,7 @@ function getSafeRawValue(inputValue, locale) {
   if (isString(inputValue)) {
     return inputValue
   } else if (isNumber(inputValue)) {
-    return inputValue.toLocaleString(locale)
+    return inputValue.toLocaleString(locale, {maximumFractionDigits: 20})
   } else if (inputValue === undefined || inputValue === null) {
     return emptyString
   } else {
